@@ -1,2 +1,2 @@
 # STALKER-Eminence
- Scripts for Board Game in Tabletop Simulator
+Scripts for STALKER Eminence(Board Game) in Tabletop Simulator
