@@ -89,6 +89,10 @@ function onLoad(save_state)
         flag = loaded_data[2]
         attributes = loaded_data[3]
         wheels = loaded_data[4]
+    else
+        flag = false
+        attributes = {0, 0, 0, 0}
+        wheels = {true, true, true, true}        
     end
 
     self.addContextMenuItem("Запомнить машину", rememberCar)
