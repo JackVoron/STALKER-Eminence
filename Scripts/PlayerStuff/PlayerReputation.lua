@@ -1,6 +1,6 @@
 reputations = {}
-font_colors = {{0.55, 0.05, 0.05, 1}, {0.77, 0.77, 0.5, 0.73}, {0.05, 0.35, 0.05, 1}}
-
+font_colors = {{0.4, 0.03, 0.03, 1}, {0, 0, 0, 1}, {0.03, 0.25, 0.03, 1}}
+fractions_name = {"Одиночки", "Братство", "Долг", "Воля", "Чистое Небо", "Экологи", "Силы ОДКБ", "Контингент ООН", "Наёмники", "Монолит"}
 function onSave()
     saved_data = JSON.encode(reputations)
     return saved_data
@@ -9,7 +9,8 @@ end
 function onLoad(save_state)
     if save_state ~= '' then
         reputations = JSON.decode(save_state)
-    else
+    end
+    if reputations[1] == nil then
         reputations = {5,5,5,5,5,5,5,5,5,5}
     end
     createButtons()
@@ -17,37 +18,23 @@ end
 
 function createButtons()
     -- Отображающие
-    for i=1,5 do
-        my_pos = {-1.4, 0.65, -7.45 + ((i-1)*3.2)}
+    for i=1,10 do
+        my_pos = {2.35, 0.6, -7.415 + ((i-1)*1.6615)}
         self.createButton({
             click_function = "none",
             function_owner = self,
-            rotation       = {-10, 0, 0},
+            rotation       = {0, 0, 0},
             position       = my_pos,
-            scale          = {4.75,1,2},
+            scale          = {4.75,1,1.2},
             width          = 0,
             height         = 0,
-            font_size      = 200,
-        })
-    end
-
-    for i=6,10 do
-        my_pos = {6.4, 0.65, -7.45 + ((i-6)*3.2)}
-        self.createButton({
-            click_function = "none",
-            function_owner = self,
-            rotation       = {-10, 0, 0},
-            position       = my_pos,
-            scale          = {4.75,1,2},
-            width          = 0,
-            height         = 0,
-            font_size      = 200,
+            font_size      = 400,
         })
     end
 
     -- для кликов
-    for i=1,5 do
-        my_pos = {-3.9, 0.65, -6.4 + ((i-1)*3.2)}
+    for i=1,10 do
+        my_pos = {0, 0.65, -7.5 + ((i-1)*1.665)}
         func = function(obj, color, alt_click) changeReputation(color, alt_click, i) end
         func_name = "changeReputation" .. i
         self.setVar(func_name, func)
@@ -55,26 +42,10 @@ function createButtons()
             click_function = func_name,
             function_owner = self,
             position       = my_pos,
-            scale          = {4.75,1,2},
-            width          = 700,
-            height         = 700,
-            color          = {0.1, 0.1, 0.1, 0.01},
-            hover_color    = {0.1, 0.1, 0.1, 0.01},
-        })
-        updateDisplay(i)
-    end
-    for i=6,10 do
-        my_pos = {3.9, 0.65, -6.4 + ((i-6)*3.2)}
-        func = function(obj, color, alt_click) changeReputation(color, alt_click, i) end
-        func_name = "changeReputation" .. i
-        self.setVar(func_name, func)
-        self.createButton({
-            click_function = func_name,
-            function_owner = self,
-            position       = my_pos,
-            scale          = {4.75,1,2},
-            width          = 700,
-            height         = 700,
+            scale          = {4.75,1,1.2},
+            width          = 1100,
+            height         = 600,
+            tooltip        = "[9B9891][b][i]" .. fractions_name[i],
             color          = {0.1, 0.1, 0.1, 0.01},
             hover_color    = {0.1, 0.1, 0.1, 0.01},
         })
@@ -109,7 +80,11 @@ function updateDisplay(i)
     else
         my_font_color = font_colors[3]
     end
-    self.editButton({index = i - 1, font_color = my_font_color, label = reputations[i]})
+    if reputations[i] == 0 then
+        self.editButton({index = i - 1, font_color = my_font_color, label = "☣"})
+    else
+        self.editButton({index = i - 1, font_color = my_font_color, label = reputations[i]})
+    end
 end
 
 function none()
