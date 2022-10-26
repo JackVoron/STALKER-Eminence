@@ -83,7 +83,7 @@ function onSave()
 end
 
 function onLoad(save_state)
-    if save_state ~= nil then
+    if save_state ~= "" then
         loaded_data = JSON.decode(save_state)
         car = loaded_data[1]
         flag = loaded_data[2]
