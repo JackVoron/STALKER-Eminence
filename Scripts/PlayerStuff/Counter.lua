@@ -8,7 +8,9 @@ light_mode = false
 promote = false
 max_condition = nil
 min_condition = nil
-offset = nil
+offsetZ = nil
+offsetX = nil
+step = nil
 
 function onLoad(saved_data)
     if saved_data ~= '' then
@@ -27,7 +29,7 @@ function createButtons()
         function_owner = self, 
         label          = "",
         scale          = {3, 0, 3},
-        position       = {offset, 0.05, 0},
+        position       = {offsetX, 0.05, offsetZ},
         width          = 0, 
         height         = 0,
         font_size      = 4000, 
@@ -76,7 +78,9 @@ function Settings()
 
     max_condition = tonumber(settings.max_condition)
     min_condition = tonumber(settings.min_condition)
-    offset = tonumber(settings.offset)
+    offsetY = tonumber(settings.offsetY)
+    offsetX = tonumber(settings.offsetX)
+    step = tonumber(settings.step)
 
     if settings.promote == "true" or settings.promote == "True"  then
         promote = true
@@ -94,8 +98,14 @@ function Settings()
     if settings.min_condition == nil or settings.min_condition == "" then
         min_condition = 0
     end
-    if settings.offset == nil or settings.offset == "" then
-        offset = 0
+    if settings.offsetZ == nil or settings.offsetZ == "" then
+        offsetZ = 0
+    end
+    if settings.offsetX == nil or settings.offsetX == "" then
+        offsetX = 0
+    end
+    if settings.step == nil or settings.step == "" then
+        step = 1
     end
 end
 
