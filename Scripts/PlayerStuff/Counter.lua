@@ -118,12 +118,12 @@ function changeValue(obj,player_color,alt_click)
         end
     end
     if alt_click == false then
-        if count < max_condition then
-            count = count + 1
+        if count + step <= max_condition then
+            count = count + step
         end
     else
-        if count > min_condition then
-            count = count - 1
+        if count - step > min_condition then
+            count = count - step
         end
     end
     updateDisplay()
