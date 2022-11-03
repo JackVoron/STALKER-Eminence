@@ -24,6 +24,7 @@ end
 
 function createButtons()
     Settings()
+
     self.createButton({
         click_function = "updateDisplay",
         function_owner = self, 
@@ -78,7 +79,7 @@ function Settings()
 
     max_condition = tonumber(settings.max_condition)
     min_condition = tonumber(settings.min_condition)
-    offsetY = tonumber(settings.offsetY)
+    offsetZ = tonumber(settings.offsetZ)
     offsetX = tonumber(settings.offsetX)
     step = tonumber(settings.step)
 
@@ -136,5 +137,5 @@ function updateDisplay()
     else
         my_color = {0,0,0,1}
     end
-    self.editButton({index = 0, label = count, font_color = my_color, position = {offset, 0.05, 0} })
+    self.editButton({index = 0, label = count, font_color = my_color, position = {offsetX, 0.05, offsetZ} })
 end
