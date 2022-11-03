@@ -122,7 +122,7 @@ function changeValue(obj,player_color,alt_click)
             count = count + step
         end
     else
-        if count - step > min_condition then
+        if count - step >= min_condition then
             count = count - step
         end
     end
