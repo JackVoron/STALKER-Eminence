@@ -83,12 +83,16 @@ function onSave()
 end
 
 function onLoad(save_state)
-    if save_state ~= nil then
+    if save_state ~= "" then
         loaded_data = JSON.decode(save_state)
         car = loaded_data[1]
         flag = loaded_data[2]
         attributes = loaded_data[3]
         wheels = loaded_data[4]
+    else
+        flag = false
+        attributes = {0, 0, 0, 0}
+        wheels = {true, true, true, true}        
     end
 
     self.addContextMenuItem("Запомнить машину", rememberCar)

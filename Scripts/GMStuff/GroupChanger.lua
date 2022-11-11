@@ -58,7 +58,11 @@ function changeNotes()
         for color_name, color_code in pairs(colors) do
             if string.find(note.title, ".+" ..  color_code .. ".+") ~= nil then
                 if note.color == "Black" then
-                    note.color = tostring(color_name)
+                    if color_name ~= "Teal" then
+                        note.color = color_name
+                    else
+                        note.color = "Grey"
+                    end
                 else
                     note.color = "Black"
                 end

@@ -8,7 +8,9 @@ light_mode = false
 promote = false
 max_condition = nil
 min_condition = nil
-offset = nil
+offsetZ = nil
+offsetX = nil
+step = nil
 
 function onLoad(saved_data)
     if saved_data ~= '' then
@@ -22,12 +24,13 @@ end
 
 function createButtons()
     Settings()
+
     self.createButton({
         click_function = "updateDisplay",
         function_owner = self, 
         label          = "",
         scale          = {3, 0, 3},
-        position       = {offset, 0.05, 0},
+        position       = {offsetX, 0.05, offsetZ},
         width          = 0, 
         height         = 0,
         font_size      = 4000, 
@@ -76,7 +79,9 @@ function Settings()
 
     max_condition = tonumber(settings.max_condition)
     min_condition = tonumber(settings.min_condition)
-    offset = tonumber(settings.offset)
+    offsetZ = tonumber(settings.offsetZ)
+    offsetX = tonumber(settings.offsetX)
+    step = tonumber(settings.step)
 
     if settings.promote == "true" or settings.promote == "True"  then
         promote = true
@@ -94,8 +99,14 @@ function Settings()
     if settings.min_condition == nil or settings.min_condition == "" then
         min_condition = 0
     end
-    if settings.offset == nil or settings.offset == "" then
-        offset = 0
+    if settings.offsetZ == nil or settings.offsetZ == "" then
+        offsetZ = 0
+    end
+    if settings.offsetX == nil or settings.offsetX == "" then
+        offsetX = 0
+    end
+    if settings.step == nil or settings.step == "" then
+        step = 1
     end
 end
 
@@ -107,12 +118,12 @@ function changeValue(obj,player_color,alt_click)
         end
     end
     if alt_click == false then
-        if count < max_condition then
-            count = count + 1
+        if count + step <= max_condition then
+            count = count + step
         end
     else
-        if count > min_condition then
-            count = count - 1
+        if count - step >= min_condition then
+            count = count - step
         end
     end
     updateDisplay()
@@ -126,5 +137,5 @@ function updateDisplay()
     else
         my_color = {0,0,0,1}
     end
-    self.editButton({index = 0, label = count, font_color = my_color, position = {offset, 0.05, 0} })
+    self.editButton({index = 0, label = count, font_color = my_color, position = {offsetX, 0.05, offsetZ} })
 end
