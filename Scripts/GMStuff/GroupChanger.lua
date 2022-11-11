@@ -1,10 +1,4 @@
---A020F0 fiol
---DA1A18 red
---FFFFFF white
---E7E52C ye
---31B32B gre
-colors = {Purple = "A020F0" , Red = "DA1A18", White = "FFFFFF", Yellow = "E7E52C", Green = "31B32B"}
-
+colors = {Purple = "A020F0" , Red = "DA1A18", White = "FFFFFF", Yellow = "E7E52C", Green = "31B32B", Teal = "21B19B"}
 
 function onLoad()
     self.createButton({
