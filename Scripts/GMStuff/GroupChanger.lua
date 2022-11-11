@@ -47,4 +47,35 @@ function changeGroup()
             end
         end
     end
+    self.editButton({index = 0, tooltip = "Текущая группа: ".. self.getGMNotes()})
+    changeNotes()
+end
+
+function changeNotes()
+    notes = {}
+    for i, note in pairs(getNotebookTabs()) do
+        for color_name, color_code in pairs(colors) do
+            if string.find(note.title, ".+" ..  color_code .. ".+") ~= nil then
+                if note.color == "Black" then
+                    if color_name ~= "Teal" then
+                        note.color = color_name
+                    else
+                        note.color = "Grey"
+                    end
+                else
+                    note.color = "Black"
+                end
+                break
+            end
+        end
+        notes[i] = note
+    end
+
+    for i = #notes, 1, -1 do
+        removeNotebookTab(i-1)
+    end
+    
+    for i = 1, #notes do
+        addNotebookTab(notes[i])
+    end
 end
