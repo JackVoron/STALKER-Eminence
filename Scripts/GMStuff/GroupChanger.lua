@@ -1,4 +1,4 @@
-
+colors = {Purple = "A020F0" , Red = "DA1A18", White = "FFFFFF", Yellow = "E7E52C", Green = "31B32B", Teal = "21B19B"}
 
 function onLoad()
     self.createButton({
@@ -11,6 +11,7 @@ function onLoad()
         color          = {0,0,0},
         font_color     = {1,1,1},
         font_size      = 600,
+        tooltip        = "Текущая группа: ".. self.getGMNotes()
     })
     changeGroup()
     changeGroup()
