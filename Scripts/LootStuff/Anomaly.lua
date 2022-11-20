@@ -1,39 +1,218 @@
+artifacts = 
+{
+    grav = 
+    {
+        level_1 = 
+        {
+            {
+                name = "[99ff33]Выверт",
+                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/wrenched.unity3d"
+            },
+            {
+                name = "[99ff33]Кровь камня",
+                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/stone_blood.unity3d"
+            },
+            {
+                name = "[99ff33]Медуза",
+                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/medusa.unity3d"
+            },
+        },
+        level_2 = 
+        {
+            {
+                name = "[33ccff]Грави",
+                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/gravi.unity3d"
+            },
+            {
+                name = "[33ccff]Ломоть мяса",
+                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/meat_chunk.unity3d"
+            },
+            {
+                name = "[99ff33]Каменный цветок",
+                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/stone_flower.unity3d"
+            },
+        }, 
+        level_3 = 
+        {
+            {
+                name = "[ff9900]Золотая рыбка",
+                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/goldfish.unity3d"
+            },
+            {
+                name = "[33ccff]Душа",
+                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/soul.unity3d"
+            },
+            {
+                name = "[99ff33]Ночная звезда",
+                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/night_star.unity3d"
+            },
+        }, 
+    },
+    electro = 
+    {
+        level_1 = 
+        {
+            {
+                name = "[99ff33]Бенгальский огонь",
+                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/sparkler.unity3d"
+            },
+            {
+                name = "[99ff33]Пустышка",
+                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/shell.unity3d"
+            },
+        },
+        level_2 = 
+        {
+            {
+                name = "[33ccff]Электрон",
+                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/battery.unity3d"
+            },
+            {
+                name = "[99ff33]Вспышка",
+                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/flash.unity3d"
+            },
+        }, 
+        level_3 = 
+        {
+            {
+                name = "[ff9900]Лунный свет",
+                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/moonlight.unity3d"
+            },
+            {
+                name = "[ff9900]Снежинка",
+                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/snowflake.unity3d"
+            },
+        }, 
+    },
+    pyro = 
+    {
+        level_1 = 
+        {
+            {
+                name = "[99ff33]Капля",
+                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/blob.unity3d"
+            },
+            {
+                name = "[99ff33]Кристалл",
+                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/crystal.unity3d"
+            },
+        },
+        level_2 = 
+        {
+            {
+                name = "[33ccff]Мамины бусы",
+                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/mama_s_beads.unity3d"
+            },
+            {
+                name = "[99ff33]Глаз",
+                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/eye.unity3d"
+            },
+        }, 
+        level_3 = 
+        {
+            {
+                name = "[ff9900]Огненный шар",
+                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/fire_ball.unity3d"
+            },
+            {
+                name = "[ff9900]Пламя",
+                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/flame.unity3d"
+            },
+        }, 
+    },
+    toxic = 
+    {
+        level_1 = 
+        {
+            {
+                name = "[99ff33]Колючка",
+                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/thorn.unity3d"
+            },
+            {
+                name = "[99ff33]Слизь",
+                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/slime.unity3d"
+            },
+        },
+        level_2 = 
+        {
+            {
+                name = "[33ccff]Кристальная колючка",
+                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/crystal_thorn.unity3d"
+            },
+            {
+                name = "[33ccff]Слизняк",
+                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/slug.unity3d"
+            },
+        }, 
+        level_3 = 
+        {
+            {
+                name = "[ff9900]Морской ёж",
+                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/sea_urchin.unity3d"
+            },
+            {
+                name = "[33ccff]Слюда",
+                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/mica.unity3d"
+            },
+            {
+                name = "[99ff33]Светляк",
+                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/firefly.unity3d"
+            },
+            {
+                name = "[33ccff]Пузырь",
+                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/bubble.unity3d"
+            },
+            {
+                name = "[99ff33]Колобок",
+                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/kolobok.unity3d"
+            },
+        }, 
+    },
+}
+
+
 anomalies_info = {
     {
         name = "Трамплин",
         color = "968F7C",
         font_color = "281102",
-        field_image = "http://cloud-3.steamusercontent.com/ugc/1878591893800912499/ACE9CE23DABB89A8C4C789CE9D081D11437E48C9/"
+        field_image = "http://cloud-3.steamusercontent.com/ugc/1878591893800912499/ACE9CE23DABB89A8C4C789CE9D081D11437E48C9/",
+        artifact_type = artifact.grav,
     },
     {
         name = "Воронка",
         color = "968F7C",
         font_color = "281102",
-        field_image = "http://cloud-3.steamusercontent.com/ugc/1878591893800909974/EA1C8957709348B47CBB22C57F9147C005DF210C/"
+        field_image = "http://cloud-3.steamusercontent.com/ugc/1878591893800909974/EA1C8957709348B47CBB22C57F9147C005DF210C/",
+        artifact_type = artifact.grav,
     },
     {
         name = "Карусель",
         color = "968F7C",
         font_color = "281102",
-        field_image = "http://cloud-3.steamusercontent.com/ugc/1878591893800908818/0B0E23A8ABE39A3EB55F17D4735FC4E43B5D148A/"
+        field_image = "http://cloud-3.steamusercontent.com/ugc/1878591893800908818/0B0E23A8ABE39A3EB55F17D4735FC4E43B5D148A/",
+        artifact_type = artifact.grav,
     },
     {
         name = "Электра",
         color = "4C6C82",
         font_color = "C1A829",
-        field_image = "http://cloud-3.steamusercontent.com/ugc/1878591893800913791/F8F447491E7150EF610CF16FA7F6EDC5A9A4A415/"
+        field_image = "http://cloud-3.steamusercontent.com/ugc/1878591893800913791/F8F447491E7150EF610CF16FA7F6EDC5A9A4A415/",
+        artifact_type = artifact.electro,
     },
     {
         name = "Жарка",
         color = "B3523E",
         font_color = "C1A829",
-        field_image = "http://cloud-3.steamusercontent.com/ugc/1878591893800909397/9CE297A2ACECB251EF1C79C29A208B1A0EA4F4B0/"
+        field_image = "http://cloud-3.steamusercontent.com/ugc/1878591893800909397/9CE297A2ACECB251EF1C79C29A208B1A0EA4F4B0/",
+        artifact_type = artifact.pyro,
     },
     {
         name = "Химическая угроза",
         color = "5A8B49",
         font_color = "C1A829",
-        field_image = "http://cloud-3.steamusercontent.com/ugc/1878591893800913128/2035EDC3C71A6FEEDF7D1DE50D9B00E3B7A827C5/"
+        field_image = "http://cloud-3.steamusercontent.com/ugc/1878591893800913128/2035EDC3C71A6FEEDF7D1DE50D9B00E3B7A827C5/",
+        artifact_type = artifact.toxic,
     },
     {
         name = "Радиационная угроза",
@@ -58,6 +237,18 @@ fields_chance_by_level = {
     }
 }
 
+loot_chance_by_level = {
+    {
+        80, 100, -1, -1
+    },
+    {
+        10, 90, 100, -1
+    },
+    {
+        -1, 10, 90, 100
+    }
+}
+
 fields_damage_by_level = {
     { 3, 4, 4, 5, 5, 5, 6, 6, 7 },
     { 5, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 10 },
@@ -75,8 +266,8 @@ artifact_field_image = "http://cloud-3.steamusercontent.com/ugc/1878591893800753
 counter = 0
 current_anomaly_level = 1
 current_anomaly_type = nil
-artifact_quantity = nil
-loot_quantity = nil
+artifact_quantity = 0
+loot_quantity = 0
 zone_guid = nil
 objects = nil
 
@@ -192,7 +383,26 @@ function createButtons()
         font_size      = 560,
         font_color     = {0.74,0.71,0.42,0.32}, 
     })
-    
+
+    self.createButton({
+        click_function = "pickUpArtifact",
+        function_owner = self,
+        position       = {-5.225,0.6,-7.2},
+        width          = 880,
+        height         = 880,
+        color          = {0,0,0,0},
+        tooltip        = "[b][965375]Подобрать артефакт",
+    })
+
+    self.createButton({
+        click_function = "pickUpLoot",
+        function_owner = self,
+        position       = {-3.425,0.6,-7.2},
+        width          = 880,
+        height         = 880,
+        color          = {0,0,0,0},
+        tooltip        = "[b][815029]Подобрать хабар",
+    })
 end
 
 function chooseAnomaly(obj, player_color, alt_click, i)
@@ -217,8 +427,22 @@ function createAnomaly(obj, player_color, alt_click)
         return
     end
 
-    artifact_quantity = math.random(0,3)
-    loot_quantity = math.random(2,6)
+    local settings = Settings()
+
+    if settings.artifact_quantity == nil or tonumber(settings.artifact_quantity) == nil or tonumber(settings.artifact_quantity) < 0 then
+        if current_anomaly_type == 7 then
+            artifact_quantity = 0
+        else
+            artifact_quantity = math.random(0,3)
+        end
+    else
+        artifact_quantity = tonumber(settings.artifact_quantity)
+    end
+    if settings.loot_quantity == nil or tonumber(settings.loot_quantity) == nil or tonumber(settings.loot_quantity) < 0 then
+        loot_quantity = math.random(2,6)
+    else
+        loot_quantity = tonumber(settings.loot_quantity)
+    end
 
     local my_rotation = self.getRotation()
     local snap_points = self.getSnapPoints()
@@ -266,6 +490,8 @@ function deleteAnomaly()
                 obj.destruct()
             end
         end
+        loot_quantity = 0
+        artifact_quantity = 0
     end,
     2)
 end
@@ -282,7 +508,6 @@ function setField(obj, f_image, script)
     obj.addTag("anomaly_field")
     obj.reload()
 end
-
 
 function changeLevel(obj, player_color, alt_click)
     if Player[player_color].admin == false then
@@ -319,6 +544,7 @@ function changeCounter(obj, player_color, alt_click)
     end
     self.editButton({index = 13, label = "[b]" .. counter})
 end
+
 function UseGMZone(obj, player_color, alt_click)
     if player_color ~= "Black" then
         return
@@ -369,6 +595,52 @@ function UseGMZone(obj, player_color, alt_click)
     end
 end
 
+function pickUpArtifact()
+    return
+end
+
+function pickUpLoot(obj, player_color)
+    if loot_quantity <= 0 then
+        broadcastToColor("[b][815029]Предметы отсутствуют[-]", player_color)
+        return
+    end
+
+    local settings = Settings()
+    local rand = math.random(100)
+    local loot_tier = loot_chance_by_level[current_anomaly_level]
+
+    if getObjectFromGUID(settings.loot_giver_GUID) then
+        local obj = getObjectFromGUID(settings.loot_giver_GUID)
+        if rand <= loot_tier[1] then
+            obj.call("copyToItem", 1)
+            printToAll(Player[player_color].steam_name .. " подобрал [31B32B][i][b]Сокровище I[/b][/i][-]")
+        elseif rand <= loot_tier[2] then
+            obj.call("copyToItem", 2)
+            printToAll(Player[player_color].steam_name .. " подобрал [E7E52C][i][b]Сокровище II[/b][/i][-]")
+        elseif rand <= loot_tier[3] then
+            obj.call("copyToItem", 3)
+            printToAll(Player[player_color].steam_name .. " подобрал [DA1918][i][b]Сокровище III[/b][/i][-]")
+        else
+            obj.call("copyToItem", 4)
+            printToAll(Player[player_color].steam_name .. " подобрал [404040][i][b]Сокровище S[/b][/i][-]")
+        end
+    else
+        if rand <= loot_tier[1] then
+            printToAll(Player[player_color].steam_name .. " подобрал [31B32B][i][b]Сокровище I[/b][/i][-]")
+        elseif rand <= loot_tier[2] then
+            printToAll(Player[player_color].steam_name .. " подобрал [E7E52C][i][b]Сокровище II[/b][/i][-]")
+        elseif rand <= loot_tier[3] then
+            printToAll(Player[player_color].steam_name .. " подобрал [DA1918][i][b]Сокровище III[/b][/i][-]")
+        else
+            printToAll(Player[player_color].steam_name .. " подобрал [404040][i][b]Сокровище S[/b][/i][-]")
+        end
+    end
+
+    loot_quantity = loot_quantity - 1
+end
+
+
+
 function Settings()
     local temp = self.getGMNotes()
     local settings = {}
@@ -377,6 +649,7 @@ function Settings()
             settings[name] = value
         end
     end
+    return settings
 end
 
 function shuffleTable(table)
@@ -404,9 +677,8 @@ function setZone(obj)
     Wait.frames(function()
         obj.destruct()
         end,
-        3000)
+        3)
 end
-
 
 function myGetObjects()
     objects = getObjectFromGUID(zone).getObjects()
