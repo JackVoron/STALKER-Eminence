@@ -32,7 +32,7 @@ function changeGroup()
         self.setGMNotes("1")
         for _, obj in pairs(objects) do
             if obj.hasTag("Group0") then
-                obj.setInvisibleTo({"White", "Green", "Purple", "Red", "Yellow", "Grey"})
+                obj.setInvisibleTo({"White", "Brown", "Red", "Orange", "Yellow", "Green", "Teal", "Blue", "Purple", "Pink", "Grey"})
             end
             if obj.hasTag("Group1") then
                 obj.setInvisibleTo()
@@ -42,7 +42,7 @@ function changeGroup()
         self.setGMNotes("0")
         for _, obj in pairs(objects) do
             if obj.hasTag("Group1") then
-                obj.setInvisibleTo({"White", "Green", "Purple", "Red", "Yellow", "Grey"})
+                obj.setInvisibleTo({"White", "Brown", "Red", "Orange", "Yellow", "Green", "Teal", "Blue", "Purple", "Pink", "Grey"})
             end
             if obj.hasTag("Group0") then
                 obj.setInvisibleTo()
