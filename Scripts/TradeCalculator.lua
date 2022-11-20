@@ -27,15 +27,17 @@ phrases = {
 selling_rep = {-20,-10,0,5,10,15,20,25,30,30}
 buying_rep = {-40,-20,0,10,20,30,40,50,60,70}
 symbols = {"☣", "Ⅱ","Ⅲ","Ⅳ","Ⅴ","Ⅵ","Ⅶ","Ⅷ","Ⅸ","♕"}
-function onLoad(save_state)
-    createButtonsAndInputs()
-end
+
 
 reputation = 3
 
 selling_price = nil
 buying_price = nil
 result_price = 0
+
+function onLoad(save_state)
+    createButtonsAndInputs()
+end
 
 function createButtonsAndInputs()
     for i = 1, 2 do

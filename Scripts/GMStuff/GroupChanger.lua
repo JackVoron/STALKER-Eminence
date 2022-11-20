@@ -1,4 +1,5 @@
-colors = {Purple = "A020F0" , Red = "DA1A18", White = "FFFFFF", Yellow = "E7E52C", Green = "31B32B", Teal = "21B19B"}
+colors = {White = "FFFFFF", Brown = "713B17", Red = "DA1A18", Orange = "F4641D", Yellow = "E7E52C", Green = "31B32B", 
+        Teal = "21B19B", Blue = "1E87FF", Purple = "A020F0", Pink = "F570CE", Grey = "808080"}
 
 function onLoad()
     self.createButton({
@@ -31,7 +32,7 @@ function changeGroup()
         self.setGMNotes("1")
         for _, obj in pairs(objects) do
             if obj.hasTag("Group0") then
-                obj.setInvisibleTo({"White", "Green", "Purple", "Red", "Yellow", "Grey"})
+                obj.setInvisibleTo({"White", "Brown", "Red", "Orange", "Yellow", "Green", "Teal", "Blue", "Purple", "Pink", "Grey"})
             end
             if obj.hasTag("Group1") then
                 obj.setInvisibleTo()
@@ -41,7 +42,7 @@ function changeGroup()
         self.setGMNotes("0")
         for _, obj in pairs(objects) do
             if obj.hasTag("Group1") then
-                obj.setInvisibleTo({"White", "Green", "Purple", "Red", "Yellow", "Grey"})
+                obj.setInvisibleTo({"White", "Brown", "Red", "Orange", "Yellow", "Green", "Teal", "Blue", "Purple", "Pink", "Grey"})
             end
             if obj.hasTag("Group0") then
                 obj.setInvisibleTo()
@@ -58,11 +59,7 @@ function changeNotes()
         for color_name, color_code in pairs(colors) do
             if string.find(note.title, ".+" ..  color_code .. ".+") ~= nil then
                 if note.color == "Black" then
-                    if color_name ~= "Teal" then
-                        note.color = color_name
-                    else
-                        note.color = "Grey"
-                    end
+                    note.color = color_name
                 else
                     note.color = "Black"
                 end
