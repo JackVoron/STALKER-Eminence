@@ -843,11 +843,13 @@ function setAnomalyFromBag(t)
     chooseAnomaly(self, "Black", false, t[1])
 
     current_anomaly_level = t[2]
+    Wait.frames(function()
+        artifact_quantity = t[3]
+        loot_quantity = t[4]
+        isSpawned = true
+    end, 6)
+
     self.editButton({index = 11, label = "[b]" .. symbols[current_anomaly_level] .. "[-]"})
-    artifact_quantity = t[3]
-    loot_quantity = t[4]
-    self.reload()
-    isSpawned = true
 end
 
 function Settings()
