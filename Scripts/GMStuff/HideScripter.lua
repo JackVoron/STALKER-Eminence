@@ -2,7 +2,7 @@ script_main = [[
     isHide = 0
 
 function onSave()
-    saved_date = JSON.encode(isHide)
+    saved_data = JSON.encode(isHide)
     return saved_data
 end
 
@@ -82,7 +82,7 @@ function createZone()
     my_scale[1] = my_scale[1]*25
     my_scale[2] = 0.45
     my_scale[3] = my_scale[3]*25
-    local my_position = self.getPosition()+vector(0, 0.22, 0)
+    local my_position = self.getPosition()+vector(0, 0.7, 0)
     spawnObject({type = "ScriptingTrigger", position = my_position, scale = my_scale, rotation = self.getRotation(), callback_function = function(obj) setZone(obj) end})
 end
 
@@ -94,11 +94,16 @@ function setZone(obj)
         3)
 end
 
+
 function myGetObjects()
     objects = getObjectFromGUID(zone).getObjects()
 end
 
-function setScript()
+function setScript(obj, player_color)
+    if player_color ~= "Black" then
+        return
+    end
+    
     createZone()
     Wait.frames(myGetObjects, 2)
     Wait.frames(function()
@@ -133,7 +138,6 @@ function setScript()
         for guid, isMain in pairs(main) do
             if isMain == true then            
                 local obj = getObjectFromGUID(guid)
-                print(obj)
                 Wait.frames(function() obj.call("setHide") end, 1)
             end
         end
