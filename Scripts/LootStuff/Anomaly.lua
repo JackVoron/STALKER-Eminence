@@ -1,5 +1,4 @@
-artifacts = 
-{
+artifacts = {
     grav = 
     {
         level_1 = 
@@ -176,48 +175,55 @@ anomalies_info = {
         name = "Трамплин",
         color = "968F7C",
         font_color = "281102",
+        rgb = {150, 143, 124},
         field_image = "http://cloud-3.steamusercontent.com/ugc/1878591893800912499/ACE9CE23DABB89A8C4C789CE9D081D11437E48C9/",
-        artifact_type = artifact.grav,
+        artifact_type = artifacts.grav,
     },
     {
         name = "Воронка",
         color = "968F7C",
         font_color = "281102",
+        rgb = {150, 143, 124},
         field_image = "http://cloud-3.steamusercontent.com/ugc/1878591893800909974/EA1C8957709348B47CBB22C57F9147C005DF210C/",
-        artifact_type = artifact.grav,
+        artifact_type = artifacts.grav,
     },
     {
         name = "Карусель",
         color = "968F7C",
         font_color = "281102",
+        rgb = {150, 143, 124},
         field_image = "http://cloud-3.steamusercontent.com/ugc/1878591893800908818/0B0E23A8ABE39A3EB55F17D4735FC4E43B5D148A/",
-        artifact_type = artifact.grav,
+        artifact_type = artifacts.grav,
     },
     {
         name = "Электра",
         color = "4C6C82",
         font_color = "C1A829",
+        rgb = {76, 108, 130},
         field_image = "http://cloud-3.steamusercontent.com/ugc/1878591893800913791/F8F447491E7150EF610CF16FA7F6EDC5A9A4A415/",
-        artifact_type = artifact.electro,
+        artifact_type = artifacts.electro,
     },
     {
         name = "Жарка",
         color = "B3523E",
         font_color = "C1A829",
+        rgb = {179, 82, 62},
         field_image = "http://cloud-3.steamusercontent.com/ugc/1878591893800909397/9CE297A2ACECB251EF1C79C29A208B1A0EA4F4B0/",
-        artifact_type = artifact.pyro,
+        artifact_type = artifacts.pyro,
     },
     {
         name = "Химическая угроза",
         color = "5A8B49",
         font_color = "C1A829",
+        rgb = {90, 139, 73},
         field_image = "http://cloud-3.steamusercontent.com/ugc/1878591893800913128/2035EDC3C71A6FEEDF7D1DE50D9B00E3B7A827C5/",
-        artifact_type = artifact.toxic,
+        artifact_type = artifacts.toxic,
     },
     {
         name = "Радиационная угроза",
         color = "81771E",
         font_color = "281102",
+        rgb = {129, 119, 30},
         field_image = "http://cloud-3.steamusercontent.com/ugc/1878591893800911928/C69FE5821526582A9D228267ED7305E35F136F43/"
     },
 }
@@ -256,7 +262,7 @@ fields_damage_by_level = {
 }
 
 symbols = {"I", "II","III"}
-
+snap_points = {}
 
 empty_field_image = "http://cloud-3.steamusercontent.com/ugc/1878591893800911370/98EF29212F3D4F7AF5F8A4181E3A91A223C89A22/"
 unknown_field_image = "http://cloud-3.steamusercontent.com/ugc/1878591893800906313/4A4934250831BD138CE73EEEEF93178B9EB73750/"
@@ -268,32 +274,85 @@ current_anomaly_level = 1
 current_anomaly_type = nil
 artifact_quantity = 0
 loot_quantity = 0
+found_artifacts = 0
+found_loot = 0
 zone_guid = nil
 objects = nil
+artifact_point = nil
+bag_point = nil
+isSpawned = false
 
 field_script_start = [[
-    function onLoad()
-        self.createButton({
-            click_function = "deleteAnomaly",
-            function_owner = self,
-            label          = ]]
+function onLoad()
+    self.createButton({
+        click_function = "deleteAnomaly",
+        function_owner = self,
+        label          = ]]
             
 field_script_end = [[
-        ,
-                position       = {0,-0.1,0},
-                rotation       = {-165,180,0},
-                width          = 0,
-                height         = 0,
-                font_size      = 650,
-                color          = {0,0,0},
-            })
-        end
-    ]]
+,
+        position       = {0,-0.1,0},
+        rotation       = {-165,180,0},
+        width          = 0,
+        height         = 0,
+        font_size      = 650,
+        color          = {0,0,0},
+    })
+end
+]]
+
+script = [[
+function onLoad()
+    saved = self.memo
+    loaded = JSON.decode(saved)
+    memory = loaded[1]
+    anomaly_params = loaded[2]
+    self.addContextMenuItem("Выложить", unpackAnomaly)
+end
+
+function unpackAnomaly()
+    bag_clone = self.clone()
+    local anomaly = getObjectFromGUID(bag_clone.getGMNotes())
+    local anomaly_pos = anomaly.getPosition()
+    anomaly.call("setAnomalyFromBag", anomaly_params)
+
+    for guid, obj_params in pairs(memory) do
+        local new_pos = {obj_params.pos[1], obj_params.pos[2], obj_params.pos[3]}
+        new_pos[1] = new_pos[1] + anomaly_pos[1]
+        new_pos[3] = new_pos[3] + anomaly_pos[3]
+        local obj = bag_clone.takeObject({
+            position          = new_pos,
+            callback_function = function(obj)
+                    obj.setLock(obj_params.lock)
+                    obj.setPosition(new_pos)
+                    obj.setRotation(obj_params.rot)
+                end,
+            guid              = guid,
+        })
+        Wait.frames(function()
+            obj.setPosition(new_pos)
+        end, 30)
+    end
+
+    bag_clone.destruct()
+end
+]]    
+
 function onLoad(save_state)
     createButtons()
     self.addContextMenuItem("Обнулить счётчик", function() counter = 0 
                                                 self.editButton({index = 13, label = "[b]" .. counter}) 
                                                 end)
+    for i, snap_point in pairs(self.getSnapPoints()) do
+        if i <= 100 then 
+            snap_points[i] = snap_point
+        elseif i == 101 then
+            artifact_point = snap_point
+        elseif i == 102 then
+            bag_point = snap_point
+            break
+        end
+    end
 end
 
 function createButtons()
@@ -309,10 +368,9 @@ function createButtons()
             height         = 880,
             color          = {0,0,0,0},
             hover_color    = {0,0,0,0},
-            tooltip        = "[b][".. anomalies_info[i].color .."]" .. anomalies_info[i].name,
+            tooltip        = "[b][".. anomalies_info[i].color .."]" .. anomalies_info[i].name .. "[-]",
         })      
     end
-
     self.createButton({
         click_function = "createAnomaly",
         function_owner = self,
@@ -338,22 +396,22 @@ function createButtons()
         width          = 880,
         height         = 880,
         color          = {0,0,0,0},
-        tooltip        = "[b][968F7C]Создать/удалить прячущую зону"  
+        tooltip        = "[b][281102]Создать/удалить прячущую зону[-]"  
     })
 
     self.createButton({
-        click_function = "changeLevel",
+        click_function = "changeAnomalyLevel",
         function_owner = self,
         position       = {-7.2,0.6,-7.2},
         width          = 880,
         height         = 880,
         color          = {0,0,0,0},
         hover_color    = {0,0,0,0},
-        tooltip        = "[b][968F7C]Сменить уровень аномалии",
+        tooltip        = "[b][968F7C]Сменить уровень аномалии[-]",
     })
 
     self.createButton({
-        click_function = "changeLevel",
+        click_function = "changeAnomalyLevel",
         function_owner = self,
         label          = "[b]" .. symbols[1],
         position       = {-7.2,0.6,-7.1},
@@ -391,7 +449,7 @@ function createButtons()
         width          = 880,
         height         = 880,
         color          = {0,0,0,0},
-        tooltip        = "[b][965375]Подобрать артефакт",
+        tooltip        = "[b][965375]Подобрать артефакт[-]",
     })
 
     self.createButton({
@@ -401,14 +459,31 @@ function createButtons()
         width          = 880,
         height         = 880,
         color          = {0,0,0,0},
-        tooltip        = "[b][815029]Подобрать хабар",
+        tooltip        = "[b][815029]Подобрать хабар[-]",
     })
+
+    self.createButton({
+        click_function = "saveAnomaly",
+        function_owner = self,
+        position       = {7.2,0.6,-5.253},
+        width          = 880,
+        height         = 880,
+        color          = {0,0,0,0},
+        hover_color    = {0,0,0,0},
+        tooltip        = "[b][281102]Сохранить аномалию[-]" ,
+    })  
 end
 
 function chooseAnomaly(obj, player_color, alt_click, i)
     if Player[player_color].admin == false then
         return
     end
+
+    if isSpawned == true then
+        broadcastToColor("[b][968F7C]Аномалия уже создана[/b][-]", player_color)
+        return
+    end
+
     for i = 1,7 do
         self.editButton({index = i-1, color = {0,0,0,0}, hover_color = {0,0,0,0}})
     end
@@ -423,29 +498,27 @@ function createAnomaly(obj, player_color, alt_click)
     end
     
     if current_anomaly_type == nil then
-        broadcastToColor("[b][968F7C]Тип аномалии не выбран", player_color)
+        broadcastToColor("[b][968F7C]Тип аномалии не выбран[/b][-]", player_color)
+        return
+    end
+    
+    if isSpawned == true then
+        broadcastToColor("[b][968F7C]Аномалия уже создана[/b][-]", player_color)
         return
     end
 
-    local settings = Settings()
+    isSpawned = true
 
-    if settings.artifact_quantity == nil or tonumber(settings.artifact_quantity) == nil or tonumber(settings.artifact_quantity) < 0 then
-        if current_anomaly_type == 7 then
-            artifact_quantity = 0
-        else
-            artifact_quantity = math.random(0,3)
-        end
-    else
-        artifact_quantity = tonumber(settings.artifact_quantity)
-    end
-    if settings.loot_quantity == nil or tonumber(settings.loot_quantity) == nil or tonumber(settings.loot_quantity) < 0 then
-        loot_quantity = math.random(2,6)
-    else
-        loot_quantity = tonumber(settings.loot_quantity)
-    end
+    found_artifacts = 0
+    found_loot = 0
 
+    setLootable()
+    spawnAnomalyField()
+end
+
+function spawnAnomalyField()
     local my_rotation = self.getRotation()
-    local snap_points = self.getSnapPoints()
+    
     shuffleTable(snap_points)
     for i, snap_point in pairs(snap_points) do
 
@@ -481,21 +554,6 @@ function createAnomaly(obj, player_color, alt_click)
     end
 end
 
-function deleteAnomaly()
-    createZone()
-    Wait.frames(myGetObjects, 2)
-    Wait.frames(function()
-        for _, obj in pairs(objects) do
-            if obj.hasTag("anomaly_field") == true then      
-                obj.destruct()
-            end
-        end
-        loot_quantity = 0
-        artifact_quantity = 0
-    end,
-    2)
-end
-
 function setField(obj, f_image, script)
     obj.setCustomObject({
         image = unknown_field_image,
@@ -509,10 +567,59 @@ function setField(obj, f_image, script)
     obj.reload()
 end
 
-function changeLevel(obj, player_color, alt_click)
+function deleteAnomaly(obj, player_color)
     if Player[player_color].admin == false then
         return
     end
+
+    createZone()
+    Wait.frames(myGetObjects, 2)
+    Wait.frames(function()
+        for _, obj in pairs(objects) do
+            if obj.hasTag("anomaly_field") == true then      
+                obj.destruct()
+            end
+        end
+        loot_quantity = 0
+        artifact_quantity = 0
+    end,
+    2)
+    isSpawned = false
+end
+
+function setLootable()
+    local settings = Settings()
+
+    if settings.artifact_quantity == nil or tonumber(settings.artifact_quantity) == nil or tonumber(settings.artifact_quantity) < 0 then
+        if current_anomaly_type == 7 then
+            artifact_quantity = 0
+        else
+            artifact_quantity = math.random(0,3)
+        end
+    else
+        artifact_quantity = tonumber(settings.artifact_quantity)
+        if current_anomaly_type == 7 then
+            anomalies_info[7].artifact_type = artifacts[randomKeyFromTableDictionary(artifacts)]
+        end
+    end
+
+    if settings.loot_quantity == nil or tonumber(settings.loot_quantity) == nil or tonumber(settings.loot_quantity) < 0 then
+        loot_quantity = math.random(2,6)
+    else
+        loot_quantity = tonumber(settings.loot_quantity)
+    end
+end
+
+function changeAnomalyLevel(obj, player_color, alt_click)
+    if Player[player_color].admin == false then
+        return
+    end
+    
+    if isSpawned == true then
+        broadcastToColor("[b][968F7C]Аномалия уже создана[/b][-]", player_color)
+        return
+    end
+
     if alt_click == false then
         if current_anomaly_level < 3 then
             current_anomaly_level = current_anomaly_level + 1
@@ -526,7 +633,7 @@ function changeLevel(obj, player_color, alt_click)
             current_anomaly_level = 3
         end
     end
-    self.editButton({index = 11, label = "[b]" .. symbols[current_anomaly_level]})
+    self.editButton({index = 11, label = "[b]" .. symbols[current_anomaly_level] .. "[-]"})
 end
 
 function changeCounter(obj, player_color, alt_click)
@@ -542,7 +649,7 @@ function changeCounter(obj, player_color, alt_click)
             counter = counter - 1
         end
     end
-    self.editButton({index = 13, label = "[b]" .. counter})
+    self.editButton({index = 13, label = "[b]" .. counter .. "[-]"})
 end
 
 function UseGMZone(obj, player_color, alt_click)
@@ -595,13 +702,32 @@ function UseGMZone(obj, player_color, alt_click)
     end
 end
 
-function pickUpArtifact()
-    return
+function pickUpArtifact(obj, player_color)
+    if found_artifacts >= artifact_quantity then
+        printToAll("[b][965375]Артефакты отсутствуют[/b][-]", player_color)
+        return
+    end
+
+    local available_artifacts = anomalies_info[current_anomaly_type].artifact_type["level_" .. math.random(1, current_anomaly_level)]
+    local artifact = available_artifacts[math.random(#available_artifacts)]
+    local my_posistion = self.positionToWorld(artifact_point.position)
+    local my_rotation = self.getRotation()
+    obj = spawnObject({
+        type              = "Custom_AssetBundle",
+        position          = my_posistion,
+        scale             = {2, 0.1, 2},
+        rotation          = my_rotation,
+    })
+    obj.setCustomObject({assetbundle = artifact.object})
+    obj.setName(artifact.name)
+    obj.reload()
+
+    found_artifacts = found_artifacts + 1
 end
 
 function pickUpLoot(obj, player_color)
-    if loot_quantity <= 0 then
-        broadcastToColor("[b][815029]Предметы отсутствуют[-]", player_color)
+    if found_loot >= loot_quantity then
+        printToAll("[b][815029]Предметы отсутствуют[/b][-]", player_color)
         return
     end
 
@@ -636,10 +762,69 @@ function pickUpLoot(obj, player_color)
         end
     end
 
-    loot_quantity = loot_quantity - 1
+    found_loot = found_loot + 1
 end
 
+function saveAnomaly(obj, player_color)
+    if isSpawned == false then
+        broadcastToColor("[b][968F7C]Аномалия не создана[/b][-]", player_color)
+        return
+    end
 
+    if player_color ~= "Black" then
+        return
+    end
+    createZone()
+    Wait.frames(myGetObjects, 2)
+
+    memory = {}
+
+    bag = spawnObject({
+        type              = "Bag",
+        position          = self.positionToWorld(bag_point.position),
+        scale             = {0.7,0.7,0.7},
+        snap_to_grid      = true,
+    })
+    local rgb = anomalies_info[current_anomaly_type].rgb
+    bag.setColorTint({rgb[1]/255, rgb[2]/255, rgb[3]/255})
+    bag.setName("[b][" .. anomalies_info[current_anomaly_type].color .. "]" .. anomalies_info[current_anomaly_type].name)
+    Wait.frames(function()
+        bag.setLock(true)
+        for _, object in pairs(objects) do
+            if object.hasTag("anomaly_field") == true then
+                local obj_pos = object.getPosition()
+                local field_pos = self.getPosition()
+                memory[object.getGUID()] = {pos = {obj_pos[1] - field_pos[1], obj_pos[2], obj_pos[3] - field_pos[3]}, lock = object.getLock(), rot = object.getRotation()}
+                bag.putObject(object)
+            end
+        end
+        bag.setLock(false)
+        bag.setLuaScript(script)
+        saved = {memory, {current_anomaly_type, current_anomaly_level, artifact_quantity, loot_quantity}}
+        bag.memo = JSON.encode(saved)
+        bag.setGMNotes(self.getGUID())
+        bag.reload()
+    end, 5)
+    Wait.frames(function()
+        loot_quantity = 0
+        artifact_quantity = 0
+        isSpawned = false
+    end, 6)
+end
+
+function setAnomalyFromBag(t)
+    found_artifacts = 0
+    found_loot = 0
+
+    deleteAnomaly(self, "Black")
+    chooseAnomaly(self, "Black", false, t[1])
+
+    current_anomaly_level = t[2]
+    self.editButton({index = 11, label = "[b]" .. symbols[current_anomaly_level] .. "[-]"})
+    artifact_quantity = t[3]
+    loot_quantity = t[4]
+    isSpawned = true
+end
 
 function Settings()
     local temp = self.getGMNotes()
@@ -659,8 +844,16 @@ function shuffleTable(table)
     end
 end
 
-function randomFromTable(table)
-    return table[math.random(#table)]
+function randomFromTable(t)
+    return t[math.random(#t)]
+end
+
+function randomKeyFromTableDictionary(t)
+    local keys = {}
+    for key, _ in pairs(t) do
+        table.insert(keys, key)
+    end
+    return keys[math.random(#keys)]
 end
 
 function createZone()
@@ -677,7 +870,7 @@ function setZone(obj)
     Wait.frames(function()
         obj.destruct()
         end,
-        3)
+        6)
 end
 
 function myGetObjects()
