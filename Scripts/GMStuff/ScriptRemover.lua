@@ -40,6 +40,10 @@ function myGetObjects()
 end
 
 function removeScript()
+    if player_color ~= "Black" then
+        return
+    end
+    
     createZone()
     Wait.frames(myGetObjects, 2)
     Wait.frames(function()

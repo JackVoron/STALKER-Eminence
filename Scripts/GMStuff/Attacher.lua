@@ -10,7 +10,9 @@ function attach()
             settings[name] = value
         end
     end
-    main = getObjectFromGUID(settings.main_guid)
-    child = getObjectFromGUID(settings.child_guid)
-    main.addAttachment(child)
+    if getObjectFromGUID(settings.main_guid) and getObjectFromGUID(settings.child_guid) then 
+        main = getObjectFromGUID(settings.main_guid)
+        child = getObjectFromGUID(settings.child_guid)
+        main.addAttachment(child)
+    end
 end

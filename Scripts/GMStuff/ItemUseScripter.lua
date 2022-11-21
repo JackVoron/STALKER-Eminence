@@ -57,10 +57,10 @@ else
 ]],
 [[  
     state_guid = self.getStates()[1].guid
-    spawn_data = getObjectFromGUID(state_guid).getData()
     self.setState(2)
     self.destruct()
-    spawn_data["States"][1] = nil
+    spawn_data = getObjectFromGUID(state_guid).getData()
+    spawn_data["States"] = nil
     spawnObjectData({data = spawn_data})
     getObjectFromGUID(state_guid).destruct()
 ]]
@@ -120,6 +120,10 @@ function myGetObjects()
 end
 
 function setFunction(i)
+    if player_color ~= "Black" then
+        return
+    end
+    
     createZone()
     Wait.frames(myGetObjects, 2)
     Wait.frames(function()

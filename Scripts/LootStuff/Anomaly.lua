@@ -285,7 +285,7 @@ isSpawned = false
 field_script_start = [[
 function onLoad()
     self.createButton({
-        click_function = "deleteAnomaly",
+        click_function = "none",
         function_owner = self,
         label          = ]]
             
@@ -298,6 +298,10 @@ field_script_end = [[
         font_size      = 650,
         color          = {0,0,0},
     })
+    
+    function none()
+        return
+    end
 end
 ]]
 
@@ -338,8 +342,27 @@ function unpackAnomaly()
 end
 ]]    
 
-function onLoad(save_state)
+function onSave()
+    saved_data = JSON.encode({current_anomaly_type, current_anomaly_level, artifact_quantity, loot_quantity, isSpawned})
+    return saved_data
+end
+
+function onLoad(saved_data)
     createButtons()
+
+    if saved_data ~= "" then
+        loaded_data = JSON.decode(saved_data)
+        isSpawned = loaded_data[5]
+        if isSpawned == true then         
+            self.editButton({index = loaded_data[1] - 1, color = {0,0,0,0.85}, hover_color = {0,0,0,0.85}})
+            current_anomaly_type = loaded_data[1]
+            current_anomaly_level = loaded_data[2]
+            self.editButton({index = 11, label = "[b]" .. symbols[current_anomaly_level] .. "[-]"})
+            artifact_quantity = loaded_data[3]
+            loot_quantity = loaded_data[4]
+        end
+    end
+    
     self.addContextMenuItem("Обнулить счётчик", function() counter = 0 
                                                 self.editButton({index = 13, label = "[b]" .. counter}) 
                                                 end)
@@ -823,6 +846,7 @@ function setAnomalyFromBag(t)
     self.editButton({index = 11, label = "[b]" .. symbols[current_anomaly_level] .. "[-]"})
     artifact_quantity = t[3]
     loot_quantity = t[4]
+    self.reload()
     isSpawned = true
 end
 
