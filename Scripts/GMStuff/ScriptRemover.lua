@@ -39,7 +39,7 @@ function myGetObjects()
     objects = getObjectFromGUID(zone).getObjects()
 end
 
-function removeScript()
+function removeScript(obj, player_color)
     if player_color ~= "Black" then
         return
     end
