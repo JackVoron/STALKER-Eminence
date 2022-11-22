@@ -10,7 +10,7 @@ function disattach()
             settings[name] = value
         end
     end
-    if getObjectFromGUID(settings.main_guid) and getObjectFromGUID(settings.child_guid) then 
+    if getObjectFromGUID(settings.main_guid) then 
         main = getObjectFromGUID(settings.main_guid)
         main.removeAttachments()
     end
