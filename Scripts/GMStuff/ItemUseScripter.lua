@@ -84,7 +84,7 @@ end
 function createButtons()
     for i=1,3 do
         local funcname = "setFunction" .. i
-        local func = function() setFunction(i) end
+        local func = function(obj, player_color) setFunction(obj, player_color, i) end
         self.setVar(funcname, func)
         self.createButton({
             click_function = funcname,
@@ -119,7 +119,7 @@ function myGetObjects()
     objects = getObjectFromGUID(zone).getObjects()
 end
 
-function setFunction(i)
+function setFunction(obj, player_color, i)
     if player_color ~= "Black" then
         return
     end
