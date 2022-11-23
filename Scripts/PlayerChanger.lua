@@ -1,70 +1,79 @@
-script = [[
+colors = {White = "FFFFFF", Brown = "713B17", Red = "DA1A18", Orange = "F4641D", Yellow = "E7E52C", Green = "31B32B", 
+        Teal = "21B19B", Blue = "1E87FF", Purple = "A020F0", Pink = "F570CE", Grey = "808080"}
 
-    function onLoad()
-        saved = self.memo
-        memory = JSON.decode(saved)
-        self.addContextMenuItem("Выложить", unpackPlayer)
-    end
-
-    function unpackPlayer()
-        local changer_pos = self.getPosition()
-        for guid, obj_params in pairs(memory) do
-            local new_pos = obj_params.pos
-            new_pos[1] = new_pos[1] + changer_pos[1]
-            new_pos[3] = new_pos[3] + changer_pos[3]
-            local obj = self.takeObject({
-                position          = new_pos,
-                callback_function = function(obj)
-                     obj.setLock(obj_params.lock)
-                     obj.setPosition(new_pos)
-                     obj.setRotation(obj_params.rot)
-                    end,
-                guid              = guid,
-            })
-            Wait.frames(function()
-                obj.setPosition(new_pos)
-            end, 30)
-        end
-        self.destruct()
-    end
-]]
-
-function onLoad(save_state)
-    self.addContextMenuItem("Сложить", packPlayer)
+function onLoad()
+    self.createButton({
+        click_function = "changeGroup",
+        label          = "☺",
+        function_owner = self,
+        height         = 525,
+        width          = 525,
+        position       = {0,0.25,0},
+        color          = {0,0,0},
+        font_color     = {1,1,1},
+        font_size      = 600,
+        tooltip        = "Текущая группа: ".. self.getGMNotes()
+    })
+    changeGroup()
+    changeGroup()
 end
 
-function packPlayer()
-    memory = {}
-
-    bag = spawnObject({
-        type              = "Bag",
-        position          = self.getPosition() + vector(0,4,0),
-        snap_to_grid      = true,
-    })
-    local zone = getObjectFromGUID(self.getGMNotes())
-    new_pos =  zone.getPosition()
-    new_pos[2] = self.getPosition()[2]
-
-    zone.setPosition(new_pos)
-    Wait.frames(function()
-        bag.setLock(true)
-        for _, object in pairs(zone.getObjects()) do
-            if object.hasTag("player_changer") == false then
-                if object.hasTag("player_figurine") then
-                    local my_color = object.getColorTint()
-                    bag.setName("[" .. my_color:toHex(false) .. "]" .. "[b]" .. object.getName())
-                    bag.setColorTint(my_color)
-                end
-                local obj_pos = object.getPosition()
-                local changer_pos = self.getPosition()
-                memory[object.getGUID()] = {pos = {obj_pos[1] - changer_pos[1], obj_pos[2], obj_pos[3] - changer_pos[3]}, lock = object.getLock(), rot = object.getRotation()}
-                bag.putObject(object)
+function changeGroup()
+    local temp = getNotes()
+    if self.memo ~= nil then
+        setNotes(self.memo)
+    else
+        setNotes("")
+    end
+    self.memo = temp
+    
+    objects = getAllObjects()
+    if self.getGMNotes() == "0" then
+        self.setGMNotes("1")
+        for _, obj in pairs(objects) do
+            if obj.hasTag("Group0") then
+                obj.setInvisibleTo({"White", "Brown", "Red", "Orange", "Yellow", "Green", "Teal", "Blue", "Purple", "Pink", "Grey"})
+            end
+            if obj.hasTag("Group1") then
+                obj.setInvisibleTo()
             end
         end
-        bag.setLock(false)
-        bag.setLuaScript(script)
-        bag.memo = JSON.encode(memory)
-        bag.reload()
-        zone.setPosition(new_pos - vector(0,15,0)) 
-    end, 5)
+    else
+        self.setGMNotes("0")
+        for _, obj in pairs(objects) do
+            if obj.hasTag("Group1") then
+                obj.setInvisibleTo({"White", "Brown", "Red", "Orange", "Yellow", "Green", "Teal", "Blue", "Purple", "Pink", "Grey"})
+            end
+            if obj.hasTag("Group0") then
+                obj.setInvisibleTo()
+            end
+        end
+    end
+    self.editButton({index = 0, tooltip = "Текущая группа: ".. self.getGMNotes()})
+    changeNotes()
+end
+
+function changeNotes()
+    notes = {}
+    for i, note in pairs(getNotebookTabs()) do
+        for color_name, color_code in pairs(colors) do
+            if string.find(note.title, ".+" ..  color_code .. ".+") ~= nil then
+                if note.color == "Black" then
+                    note.color = color_name
+                else
+                    note.color = "Black"
+                end
+                break
+            end
+        end
+        notes[i] = note
+    end
+
+    for i = 1, #notes do
+        addNotebookTab(notes[i])
+    end
+
+    for i = #notes, 1, -1 do
+        removeNotebookTab(i-1)
+    end
 end
