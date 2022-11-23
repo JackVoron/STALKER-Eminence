@@ -5,45 +5,45 @@ artifacts = {
         {
             {
                 name = "[99ff33]Выверт",
-                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/wrenched.unity3d"
+                object = "http://cloud-3.steamusercontent.com/ugc/1922503068746816600/830557C5DDF00F3BD5910F7A62A1377C6A5942AE/"
             },
             {
                 name = "[99ff33]Кровь камня",
-                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/stone_blood.unity3d"
+                object = "http://cloud-3.steamusercontent.com/ugc/1922503068746816285/D186264F1EA2B22D01A497798CAA22957E734351/"
             },
             {
                 name = "[99ff33]Медуза",
-                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/medusa.unity3d"
+                object = "http://cloud-3.steamusercontent.com/ugc/1922503068746817141/EC3FBEC1706B6C03D6441A6DCBFA0B9084980E80/"
             },
         },
         level_2 = 
         {
             {
                 name = "[33ccff]Грави",
-                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/gravi.unity3d"
+                object = "http://cloud-3.steamusercontent.com/ugc/1922503068746816671/2BE86269C98B38B10724F3D223E01C6FDD9A4BB1/"
             },
             {
                 name = "[33ccff]Ломоть мяса",
-                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/meat_chunk.unity3d"
+                object = "http://cloud-3.steamusercontent.com/ugc/1922503068746817531/B8FF830CD5C5CFE89A33F721816A38B1653DBEAE/"
             },
             {
                 name = "[99ff33]Каменный цветок",
-                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/stone_flower.unity3d"
+                object = "http://cloud-3.steamusercontent.com/ugc/1922503068746818459/EBF60EB561B423B0C607A6908C1ADF696083C8CC/"
             },
         }, 
         level_3 = 
         {
             {
                 name = "[ff9900]Золотая рыбка",
-                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/goldfish.unity3d"
+                object = "http://cloud-3.steamusercontent.com/ugc/1922503068746816908/37DECE563AB4E9332FF3669469A291C39D6E858E/"
             },
             {
                 name = "[33ccff]Душа",
-                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/soul.unity3d"
+                object = "http://cloud-3.steamusercontent.com/ugc/1922503068746818389/58EA35371FA161CC2243D88C7655EC4411ED677F/"
             },
             {
                 name = "[99ff33]Ночная звезда",
-                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/night_star.unity3d"
+                object = "http://cloud-3.steamusercontent.com/ugc/1922503068746818177/4BDCFF0C080D58B08CE24457CE97F080BB6250F2/"
             },
         }, 
     },
@@ -53,33 +53,33 @@ artifacts = {
         {
             {
                 name = "[99ff33]Бенгальский огонь",
-                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/sparkler.unity3d"
+                object = "http://cloud-3.steamusercontent.com/ugc/1922503068746816816/9A5352C58855BBA2686411DC8582E12DA633E161/"
             },
             {
                 name = "[99ff33]Пустышка",
-                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/shell.unity3d"
+                object = "http://cloud-3.steamusercontent.com/ugc/1922503068746817455/E89699724F6B35B9F174857BF94E1889175C3A7E/"
             },
         },
         level_2 = 
         {
             {
                 name = "[33ccff]Электрон",
-                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/battery.unity3d"
+                object = "http://cloud-3.steamusercontent.com/ugc/1922503068746810355/2DAFFE15B6E5F43C25F67CC100075E690CF02641/"
             },
             {
                 name = "[99ff33]Вспышка",
-                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/flash.unity3d"
+                object = "http://cloud-3.steamusercontent.com/ugc/1922503068746817758/2755D0967137F0C1D3F295CD1476D29853F535E6/"
             },
         }, 
         level_3 = 
         {
             {
                 name = "[ff9900]Лунный свет",
-                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/moonlight.unity3d"
+                object = "http://cloud-3.steamusercontent.com/ugc/1922503068746817248/0BD53A75ED0B047339585E326327163885BAAE2D/"
             },
             {
                 name = "[ff9900]Снежинка",
-                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/snowflake.unity3d"
+                object = "http://cloud-3.steamusercontent.com/ugc/1922503068746817681/2D5590D939541DAF9B9DB57E6BC36861AC0EF89F/"
             },
         }, 
     },
@@ -89,33 +89,33 @@ artifacts = {
         {
             {
                 name = "[99ff33]Капля",
-                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/blob.unity3d"
+                object = "http://cloud-3.steamusercontent.com/ugc/1922503068746816529/CD2A5D61F826EF30C9E2B523B8E640FA4D1BE6AD/"
             },
             {
                 name = "[99ff33]Кристалл",
-                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/crystal.unity3d"
+                object = "http://cloud-3.steamusercontent.com/ugc/1922503068746817021/A6A2484CB1F787D3D2FA4F9F417702D3BF812527/"
             },
         },
         level_2 = 
         {
             {
                 name = "[33ccff]Мамины бусы",
-                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/mama_s_beads.unity3d"
+                object = "http://cloud-3.steamusercontent.com/ugc/1922503068746817612/BAF55381A1C4451741FC63D4496F8335B21BE443/"
             },
             {
                 name = "[99ff33]Глаз",
-                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/eye.unity3d"
+                object = "http://cloud-3.steamusercontent.com/ugc/1922503068746818326/1D119FC998ED4BFB520D8968B9175497FFAF6738/"
             },
         }, 
         level_3 = 
         {
             {
                 name = "[ff9900]Огненный шар",
-                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/fire_ball.unity3d"
+                object = "http://cloud-3.steamusercontent.com/ugc/1922503068746817927/DBE09DFD77574C78732724D53DC0214168BE0387/"
             },
             {
                 name = "[ff9900]Пламя",
-                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/flame.unity3d"
+                object = "http://cloud-3.steamusercontent.com/ugc/1922503068746817372/72EF56FB7EE40D5AD957F9512DD32AE44EB20CD8/"
             },
         }, 
     },
@@ -125,45 +125,45 @@ artifacts = {
         {
             {
                 name = "[99ff33]Колючка",
-                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/thorn.unity3d"
+                object = "http://cloud-3.steamusercontent.com/ugc/1922503068746818098/340973343174E29919D8519EE9BF09A5C1819571/"
             },
             {
                 name = "[99ff33]Слизь",
-                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/slime.unity3d"
+                object = "http://cloud-3.steamusercontent.com/ugc/1922503068746818542/8D456612B070D4E4B304BE333BCB609333F8800A/"
             },
         },
         level_2 = 
         {
             {
                 name = "[33ccff]Кристальная колючка",
-                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/crystal_thorn.unity3d"
+                object = "http://cloud-3.steamusercontent.com/ugc/1922503068746818254/F21C4096E4FCCE9C9C8B92F94EF03101B47FEFC2/"
             },
             {
                 name = "[33ccff]Слизняк",
-                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/slug.unity3d"
+                object = "http://cloud-3.steamusercontent.com/ugc/1922503068746818013/2266DA7B223CF6E8DBB57C483009DE8029763E83/"
             },
         }, 
         level_3 = 
         {
             {
                 name = "[ff9900]Морской ёж",
-                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/sea_urchin.unity3d"
+                object = "http://cloud-3.steamusercontent.com/ugc/1922503068746818612/EBDFB3890013A139051CEF4412B1C56CE9964178/"
             },
             {
                 name = "[33ccff]Слюда",
-                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/mica.unity3d"
+                object = "http://cloud-3.steamusercontent.com/ugc/1922503068746817837/FF0D812C5A1FAEFE7C519AE5BA30B9CCA966A84A/"
             },
             {
                 name = "[99ff33]Светляк",
-                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/firefly.unity3d"
+                object = "http://cloud-3.steamusercontent.com/ugc/1922503068746816374/FA1D12EC82BDD0395750E8CA60A7CC0BD6B03AB8/"
             },
             {
                 name = "[33ccff]Пузырь",
-                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/bubble.unity3d"
+                object = "http://cloud-3.steamusercontent.com/ugc/1922503068746816746/70A1406D8AEA0BCDF9E9DC4F81635C6DC568C9C9/"
             },
             {
                 name = "[99ff33]Колобок",
-                object = "http://flame-zone.ucoz.ru/unity3d/artifacts/kolobok.unity3d"
+                object = "http://cloud-3.steamusercontent.com/ugc/1922503068746816450/AC653C7A21F6EE050746B5CEEDC686E75F70C9C2/"
             },
         }, 
     },
