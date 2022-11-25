@@ -13,14 +13,14 @@ function unpackLocation(player_color)
     if not getObjectFromGUID(self.getGMNotes()) then
         return
     end
-    local JSL_controller = getObjectFromGUID(self.getGMNotes())
-    if JSL_controller.call("isSpawnedCall") == true then
+    local JLS_controller = getObjectFromGUID(self.getGMNotes())
+    if JLS_controller.call("isSpawnedCall") == true then
         broadcastToColor("[b][968F7C]Локация уже создана[/b][-]", player_color)
         return
     end
 
     bag_clone = self.clone()
-    JSL_controller.call("setSpawned")
+    JLS_controller.call("setSpawned")
     for guid, obj_params in pairs(memory) do
         local pos = obj_params.pos
         local obj = bag_clone.takeObject({
@@ -43,13 +43,13 @@ function updateLocation(player_color)
     if not getObjectFromGUID(self.getGMNotes()) then
         return
     end
-    local JSL_controller = getObjectFromGUID(self.getGMNotes())
-    if JSL_controller.call("isSpawnedCall") == false then
+    local JLS_controller = getObjectFromGUID(self.getGMNotes())
+    if JLS_controller.call("isSpawnedCall") == false then
         broadcastToColor("[b][968F7C]Локация не создана[/b][-]", player_color)
         return
     end
     t = {self.getGUID()}
-    JSL_controller.call("updateBag", t)
+    JLS_controller.call("updateBag", t)
 end
 ]]    
 
