@@ -6,7 +6,7 @@ function onLoad()
     loaded = JSON.decode(saved)
     memory = loaded
     self.addContextMenuItem("Создать локацию", unpackLocation)
-    self.addContextMenuItem("Обновить лвокацию", updateLocation)
+    self.addContextMenuItem("Обновить локацию", updateLocation)
 end
 
 function unpackLocation(player_color)
