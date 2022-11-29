@@ -69,11 +69,11 @@ function changeNotes()
         notes[i] = note
     end
 
-    for i = #notes, 1, -1 do
-        removeNotebookTab(i-1)
-    end
-    
     for i = 1, #notes do
         addNotebookTab(notes[i])
+    end
+
+    for i = #notes, 1, -1 do
+        removeNotebookTab(i-1)
     end
 end

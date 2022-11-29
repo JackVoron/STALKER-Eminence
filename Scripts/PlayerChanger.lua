@@ -35,7 +35,6 @@ end
 
 function packPlayer()
     memory = {}
-
     bag = spawnObject({
         type              = "Bag",
         position          = self.getPosition() + vector(0,4,0),
