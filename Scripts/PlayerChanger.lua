@@ -1,11 +1,9 @@
 script = [[
-
     function onLoad()
         saved = self.memo
         memory = JSON.decode(saved)
         self.addContextMenuItem("Выложить", unpackPlayer)
     end
-
     function unpackPlayer()
         local changer_pos = self.getPosition()
         for guid, obj_params in pairs(memory) do
@@ -16,7 +14,6 @@ script = [[
                 position          = new_pos,
                 callback_function = function(obj)
                      obj.setLock(obj_params.lock)
-                     obj.setPosition(new_pos)
                      obj.setRotation(obj_params.rot)
                     end,
                 guid              = guid,
@@ -35,6 +32,7 @@ end
 
 function packPlayer()
     memory = {}
+
     bag = spawnObject({
         type              = "Bag",
         position          = self.getPosition() + vector(0,4,0),
