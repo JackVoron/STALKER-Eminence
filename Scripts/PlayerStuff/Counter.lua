@@ -13,6 +13,13 @@ offsetX = nil
 step = nil
 
 function onLoad(saved_data)
+    self.UI.setCustomAssets({
+        {
+            type = 1,
+            name = "cifont",
+            url = "http://cloud-3.steamusercontent.com/ugc/1986680868878944084/44125D7412F853AA4ED4A3701035C20D4FE14E90/",
+        }
+    })
     if saved_data ~= '' then
         local loaded_data = JSON.decode(saved_data)
         count = loaded_data[1]
@@ -25,17 +32,23 @@ end
 function createButtons()
     Settings()
 
-    self.createButton({
-        click_function = "updateDisplay",
-        function_owner = self, 
-        label          = "",
-        scale          = {3, 0, 3},
-        position       = {offsetX, 0.05, offsetZ},
-        width          = 0, 
-        height         = 0,
-        font_size      = 4000, 
-        font_color     = {0,0,0,1}
-    })
+    self.UI.setXml(
+        [[<Text
+            id="display"
+            height="300"
+            width="300"
+            color="#F00000"
+            fontSize="250"
+            font="cifont/cifont"
+            alignment="MiddleCenter"
+            rotation="180 180 0"
+            horizontalOverflow="overflow"
+            onClick="changePoint"
+            textColor="#dbdbdb"
+            text="error"
+        />]]
+    )
+
     local funcname = "addValue"
     local func = function(obj,player_color,alt_click) changeValue(obj,player_color,false) end
     self.setVar(funcname, func)
@@ -64,7 +77,7 @@ function createButtons()
         color          = {0,0,0,0.95},
         font_color     = {0.74,0.71,0.42,0.9}
     })
-    updateDisplay()
+    Wait.frames(updateDisplay, 5)
 end
 
 
@@ -133,9 +146,11 @@ function updateDisplay()
     Settings()
     local my_color = nil
     if light_mode == true then
-        my_color = {0.74,0.71,0.42,0.9}
+        my_color = "#bdb56b"
     else
-        my_color = {0,0,0,1}
+        my_color = "#000000"
     end
-    self.editButton({index = 0, label = count, font_color = my_color, position = {offsetX, 0.05, offsetZ} })
+    self.UI.setAttribute("display", "position", offsetX .. " " .. offsetZ .. " -50")
+    self.UI.setAttribute("display", "text", tostring(count))
+    self.UI.setAttribute("display", "color", my_color)
 end
