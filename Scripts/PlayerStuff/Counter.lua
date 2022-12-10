@@ -33,41 +33,44 @@ function createButtons()
     Settings()
 
     self.UI.setXml(
-        [[<Text
+        [[
+        <Text
             id="display"
             height="300"
             width="300"
             color="#F00000"
-            fontSize="250"
+            fontSize="400"
             font="cifont/cifont"
-            alignment="MiddleCenter"
             rotation="180 180 0"
             horizontalOverflow="overflow"
+            verticalOverflow="overflow"
+            position="-250 0 0"
             text="error"
         />
         <Text
+            id="minus"
             height="200"
             width="120"
             color="#000000"
-            fontSize="250"
+            fontSize="350"
             font="cifont/cifont"
-            textAlignment="MiddleCenter"
             rotation="180 180 0"
             verticalOverflow="overflow"
             position="250 0 0"
             text="-"
         />
         <Text
-        height="200"
-        width="120"
-        color="#000000"
-        fontSize="250"
-        font="cifont/cifont"
-        textrotation="180 180 0"
-        verticalOverflow="overflow"
-        position="-250 0 0"
-        text="+"
-    />
+            id="plus"
+            height="200"
+            width="120"
+            color="#000000"
+            fontSize="350"
+            font="cifont/cifont"
+            rotation="180 180 0"
+            verticalOverflow="overflow"
+            position="-250 0 0"
+            text="+"
+        />
         ]]
     )
 
@@ -170,7 +173,9 @@ function updateDisplay()
     else
         my_color = "#000000"
     end
-    self.UI.setAttribute("display", "position", offsetX .. " " .. offsetZ .. " -50")
+    self.UI.setAttribute("display", "position", offsetX .. " " .. offsetZ .. " 0")
     self.UI.setAttribute("display", "text", tostring(count))
     self.UI.setAttribute("display", "color", my_color)
+    self.UI.setAttribute("minus", "color", my_color)
+    self.UI.setAttribute("plus", "color", my_color)
 end
