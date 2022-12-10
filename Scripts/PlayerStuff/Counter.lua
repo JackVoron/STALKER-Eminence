@@ -43,10 +43,32 @@ function createButtons()
             alignment="MiddleCenter"
             rotation="180 180 0"
             horizontalOverflow="overflow"
-            onClick="changePoint"
-            textColor="#dbdbdb"
             text="error"
-        />]]
+        />
+        <Text
+            height="200"
+            width="120"
+            color="#000000"
+            fontSize="250"
+            font="cifont/cifont"
+            textAlignment="MiddleCenter"
+            rotation="180 180 0"
+            verticalOverflow="overflow"
+            position="250 0 0"
+            text="-"
+        />
+        <Text
+        height="200"
+        width="120"
+        color="#000000"
+        fontSize="250"
+        font="cifont/cifont"
+        textrotation="180 180 0"
+        verticalOverflow="overflow"
+        position="-250 0 0"
+        text="+"
+    />
+        ]]
     )
 
     local funcname = "addValue"
@@ -60,8 +82,7 @@ function createButtons()
         width          = 650, 
         height         = 900, 
         font_size      = 3000, 
-        color          = {0,0,0,0.95},
-        font_color     = {0.74,0.71,0.42,0.9}
+        color          = {0,0,0,0},
     })
     local funcname = "minusValue"
     local func = function(obj,player_color,alt_click) changeValue(obj,player_color,true) end
@@ -74,8 +95,7 @@ function createButtons()
         width          = 650, 
         height         = 900, 
         font_size      = 3000, 
-        color          = {0,0,0,0.95},
-        font_color     = {0.74,0.71,0.42,0.9}
+        color          = {0,0,0,0},
     })
     Wait.frames(updateDisplay, 5)
 end
