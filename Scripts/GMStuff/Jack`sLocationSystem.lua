@@ -2,63 +2,69 @@ isSpawned = nil
 
 script = [[
 function onLoad()
-    saved = self.memo
-    loaded = JSON.decode(saved)
-    memory = loaded
-    self.addContextMenuItem("Создать локацию", unpackLocation)
+    self.addContextMenuItem("Создать локацию", createLocation)
     self.addContextMenuItem("Обновить локацию", updateLocation)
 end
 
-function unpackLocation(player_color)
+function createLocation(player_color)
+    if player_color ~= "Black" then
+        return
+    end
     if not getObjectFromGUID(self.getGMNotes()) then
         return
     end
-    local JLS_controller = getObjectFromGUID(self.getGMNotes())
-    if JLS_controller.call("isSpawnedCall") == true then
+    local JSL_controller = getObjectFromGUID(self.getGMNotes())
+    if JSL_controller.call("isSpawnedCall") == true then
         broadcastToColor("[b][968F7C]Локация уже создана[/b][-]", player_color)
         return
     end
-
-    bag_clone = self.clone()
-    JLS_controller.call("setSpawned")
-    for guid, obj_params in pairs(memory) do
-        local pos = obj_params.pos
-        local obj = bag_clone.takeObject({
-            position          = obj_params.pos,
-            callback_function = function(obj)
-                    obj.setLock(obj_params.lock)
-                    obj.setRotation(obj_params.rot)
-                end,
-            guid              = guid,
-        })
-        Wait.frames(function()
-            obj.setPosition(obj_params.pos)
-        end, 30)
+    for str in string.gmatch(self.memo, "([^".. "!!><!!" .."]+)") do
+        log(str)
+        spawnObjectJSON({json = str})
     end
-
-    bag_clone.destruct()
+ 
 end
 
 function updateLocation(player_color)
+    if player_color ~= "Black" then
+        return
+    end
+
     if not getObjectFromGUID(self.getGMNotes()) then
         return
     end
-    local JLS_controller = getObjectFromGUID(self.getGMNotes())
-    if JLS_controller.call("isSpawnedCall") == false then
+
+    local JSL_controller = getObjectFromGUID(self.getGMNotes())
+    if JSL_controller.call("isSpawnedCall") == false then
         broadcastToColor("[b][968F7C]Локация не создана[/b][-]", player_color)
         return
     end
-    t = {self.getGUID()}
-    JLS_controller.call("updateBag", t)
+
+    local zone
+    if not getObjectFromGUID(JSL_controller.getGMNotes()) then
+        return
+    end
+    zone = getObjectFromGUID(self.getGMNotes())
+
+    memory = {}
+    for _, object in pairs(zone.getObjects()) do
+        if object.hasTag("JLS_Table") == false then
+            table.insert(memory, object.getJSON())
+            object.destruct()
+        end
+    end
+
+    self.memo = JSON.encode(memory)
 end
 ]]    
 
 function onSave()
-    saved_data = JSON.encode(isSpawned)
+    saved_data = JSON.encode({isSpawned})
+    return saved_data
 end
 
 function onLoad(save_state)
-    isSpawned = JSON.decode(save_state)
+    isSpawned = JSON.decode(save_state)[1]
     if isSpawned == nil then
         isSpawned = false
     end
@@ -85,17 +91,17 @@ function createButtons()
         tooltip        = "Удалить локацию",
     })
     self.createButton({
-        click_function = "updateBags",
+        click_function = "updateMarks",
         function_owner = self,
         position       = {2.1,0.05,0},
         width          = 950,
         height         = 950,
         color          = {0,0,0,0},
-        tooltip        = "Привязать мешки с локациями к плашке",
+        tooltip        = "Привязать метки с локациями к плашке",
     })
 end
 
-function saveLocation(obj, player_color, alt_click, guid)
+function saveLocation(obj, player_color, alt_click)
     if player_color ~= "Black" then
         return
     end
@@ -105,33 +111,40 @@ function saveLocation(obj, player_color, alt_click, guid)
         return
     end
     zone = getObjectFromGUID(self.getGMNotes())
-    local bag
+
+    local location_mark
     if guid == nil then    
-        bag = spawnObject({
-            type              = "Bag",
+        location_mark = spawnObject({
+            type              = "Custom_Model",
             position          = self.getPosition() + vector(0, 0.2, 0),
-            scale             = {0.7,0.7,0.7},
-            snap_to_grid      = true,
+            scale             = {0.92,0.92,0.92},
         })
     else
-        bag = getObjectFromGUID(guid)
-        bag.reset()
+        location_mark = getObjectFromGUID(guid)
     end
-    bag.setLock(true)
 
-    memory = {}
+    location_mark.setCustomObject({
+        mesh = "http://cloud-3.steamusercontent.com/ugc/1922503068746795255/717388AF271FB873419AD708F4A848538E0D68B8/",
+        diffuse = "http://cloud-3.steamusercontent.com/ugc/1922503068746795324/E952E1E0EC86271F3C344EBCBC1FFDA148EBDA76/",
+        material = 3,
+        cast_shadows = false
+    })
+    location_mark.setLuaScript(script)
+    location_mark.setGMNotes(self.getGUID())
+    location_mark.addTag("JLS_Mark")
+
+    memory = ""
     for _, object in pairs(zone.getObjects()) do
         if object.hasTag("JLS_Table") == false then
-            memory[object.getGUID()] = {pos = object.getPosition(), lock = object.getLock(), rot = object.getRotation()}
-            bag.putObject(object)
+            temp = string.gsub(object.getJSON(), '"Nickname": ".-"', '"Nickname": ""')
+            temp = string.gsub(object.getJSON(), '"Description": ".-"', '"Description": ""')
+            memory = memory .. object.getJSON() .. "!!><!!"
+            object.destruct()
         end
     end
-    bag.setLock(false)
-    bag.setLuaScript(script)
-    bag.memo = JSON.encode(memory)
-    bag.setGMNotes(self.getGUID())
-    bag.addTag("JLS_Bag")
-    bag.reload()
+    location_mark.memo = memory
+    location_mark.reload()
+    location_mark.setLock(false)
     isSpawned = false
 end
 
@@ -154,13 +167,13 @@ function deleteLocation(obj, player_color)
     isSpawned = false
 end
 
-function updateBags(obj, player_color)
+function updateMarks(obj, player_color)
     if player_color ~= "Black" then
         return
     end
     local guid = self.getGUID()
     for _, obj in pairs(getAllObjects()) do
-        if obj.hasTag("JLS_Bag") then
+        if obj.hasTag("JLS_Mark") then
             obj.setGMNotes(guid)
         end
     end
@@ -172,12 +185,4 @@ function isSpawnedCall()
     else
         return false
     end
-end
-
-function setSpawned()
-    isSpawned = true
-end
-
-function updateBag(t)
-    saveLocation(self, "Black", false, t[1])
 end
