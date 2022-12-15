@@ -1,5 +1,4 @@
 isSpawned = nil
-
 script = [[
 function onLoad()
     self.addContextMenuItem("Создать локацию", createLocation)
@@ -18,11 +17,11 @@ function createLocation(player_color)
         broadcastToColor("[b][968F7C]Локация уже создана[/b][-]", player_color)
         return
     end
-    for str in string.gmatch(self.memo, "([^".. "!!><!!" .."]+)") do
+    for str in string.gmatch(self.memo, "([^‼]+)") do
         log(str)
         spawnObjectJSON({json = str})
     end
- 
+    JSL_controller.call("setSpawnedTrue")
 end
 
 function updateLocation(player_color)
@@ -44,17 +43,20 @@ function updateLocation(player_color)
     if not getObjectFromGUID(JSL_controller.getGMNotes()) then
         return
     end
-    zone = getObjectFromGUID(self.getGMNotes())
+    zone = getObjectFromGUID(JSL_controller.getGMNotes())
 
-    memory = {}
+    memory = ""
     for _, object in pairs(zone.getObjects()) do
         if object.hasTag("JLS_Table") == false then
-            table.insert(memory, object.getJSON())
+            temp = string.gsub(object.getJSON(), "о", "o")
+            temp = string.gsub(temp, "м", "m")
+            temp = string.gsub(temp, "С", "C")
+            memory = memory .. temp .. "‼"
             object.destruct()
         end
     end
-
-    self.memo = JSON.encode(memory)
+    self.memo = memory
+    JSL_controller.call("setSpawnedFalse")
 end
 ]]    
 
@@ -136,9 +138,10 @@ function saveLocation(obj, player_color, alt_click)
     memory = ""
     for _, object in pairs(zone.getObjects()) do
         if object.hasTag("JLS_Table") == false then
-            temp = string.gsub(object.getJSON(), '"Nickname": ".-"', '"Nickname": ""')
-            temp = string.gsub(object.getJSON(), '"Description": ".-"', '"Description": ""')
-            memory = memory .. object.getJSON() .. "!!><!!"
+            temp = string.gsub(object.getJSON(), "о", "o")
+            temp = string.gsub(temp, "м", "m")
+            temp = string.gsub(temp, "С", "C")
+            memory = memory .. temp .. "‼"
             object.destruct()
         end
     end
@@ -185,4 +188,12 @@ function isSpawnedCall()
     else
         return false
     end
+end
+
+function setSpawnedTrue()
+    isSpawned = true
+end
+
+function setSpawnedFalse()
+    isSpawned = false
 end
