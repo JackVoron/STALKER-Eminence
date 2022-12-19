@@ -2,7 +2,7 @@ isSpawned = nil
 script = [[
 function onLoad()
     self.addContextMenuItem("Создать локацию", createLocation)
-    self.addContextMenuItem("Обновить локацию", updateLocation)
+    self.addContextMenuItem("Обновить локацию", confirmUpdate)
 end
 
 function createLocation(player_color)
@@ -24,11 +24,14 @@ function createLocation(player_color)
     JSL_controller.call("setSpawnedTrue")
 end
 
-function updateLocation(player_color)
+function confirmUpdate(player_color)
     if player_color ~= "Black" then
         return
     end
+    Player[player_color].showConfirmDialog('Вы уверены, что вы хотите обновить локацию "' .. self.getName() .. '"?' , updateLocation)
+end
 
+function updateLocation(player_color)
     if not getObjectFromGUID(self.getGMNotes()) then
         return
     end
@@ -44,19 +47,25 @@ function updateLocation(player_color)
         return
     end
     zone = getObjectFromGUID(JSL_controller.getGMNotes())
+    new_pos = zone.getPosition()
+    new_pos[2] = JSL_controller.getPosition()[2]
+    zone.setPosition(new_pos)
 
-    memory = ""
-    for _, object in pairs(zone.getObjects()) do
-        if object.hasTag("JLS_Table") == false then
-            temp = string.gsub(object.getJSON(), "о", "o")
-            temp = string.gsub(temp, "м", "m")
-            temp = string.gsub(temp, "С", "C")
-            memory = memory .. temp .. "‼"
-            object.destruct()
+    Wait.frames(function()
+        memory = ""
+        for _, object in pairs(zone.getObjects()) do
+            if object.hasTag("JLS_Table") == false then
+                temp = string.gsub(object.getJSON(), "о", "o")
+                temp = string.gsub(temp, "м", "m")
+                temp = string.gsub(temp, "С", "C")
+                memory = memory .. temp .. "‼"
+                object.destruct()
+            end
         end
-    end
-    self.memo = memory
-    JSL_controller.call("setSpawnedFalse")
+        self.memo = memory
+        JSL_controller.call("setSpawnedFalse")
+        zone.setPosition(new_pos - vector(0,60,0)) 
+    end, 5)
 end
 ]]    
 
@@ -113,6 +122,9 @@ function saveLocation(obj, player_color, alt_click)
         return
     end
     zone = getObjectFromGUID(self.getGMNotes())
+    new_pos =  zone.getPosition()
+    new_pos[2] = self.getPosition()[2]
+    zone.setPosition(new_pos)
 
     local location_mark
     if guid == nil then    
@@ -136,18 +148,22 @@ function saveLocation(obj, player_color, alt_click)
     location_mark.addTag("JLS_Mark")
 
     memory = ""
-    for _, object in pairs(zone.getObjects()) do
-        if object.hasTag("JLS_Table") == false then
-            temp = string.gsub(object.getJSON(), "о", "o")
-            temp = string.gsub(temp, "м", "m")
-            temp = string.gsub(temp, "С", "C")
-            memory = memory .. temp .. "‼"
-            object.destruct()
+    Wait.frames(function()
+        for _, object in pairs(zone.getObjects()) do
+            if object.hasTag("JLS_Table") == false then
+                temp = string.gsub(object.getJSON(), "о", "o")
+                temp = string.gsub(temp, "м", "m")
+                temp = string.gsub(temp, "С", "C")
+                memory = memory .. temp .. "‼"
+                object.destruct()
+            end
         end
-    end
-    location_mark.memo = memory
-    location_mark.reload()
-    location_mark.setLock(false)
+        location_mark.memo = memory
+        location_mark.reload()
+        location_mark.setLock(false)
+        
+        zone.setPosition(new_pos - vector(0,60,0)) 
+    end, 5)
     isSpawned = false
 end
 
@@ -161,12 +177,17 @@ function deleteLocation(obj, player_color)
         return
     end
     zone = getObjectFromGUID(self.getGMNotes())
-
-    for _, object in pairs(zone.getObjects()) do
-        if object.hasTag("JLS_Table") == false then
-            object.destruct()
+    new_pos =  zone.getPosition()
+    new_pos[2] = self.getPosition()[2]
+    zone.setPosition(new_pos)
+    Wait.frames(function()
+        for _, object in pairs(zone.getObjects()) do
+            if object.hasTag("JLS_Table") == false then
+                object.destruct()
+            end
         end
-    end
+        zone.setPosition(new_pos - vector(0,60,0)) 
+    end, 5)
     isSpawned = false
 end
 
