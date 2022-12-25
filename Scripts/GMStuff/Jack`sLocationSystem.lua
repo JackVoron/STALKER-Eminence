@@ -17,9 +17,20 @@ function createLocation(player_color)
         broadcastToColor("[b][968F7C]Локация уже создана[/b][-]", player_color)
         return
     end
-    for str in string.gmatch(self.memo, "([^‼]+)") do
-        log(str)
+    local objects = {}
+
+    for str in string.gmatch(self.memo, "([^¶]+)") do
+        table.insert(objects, str)
+    end
+
+    for str in string.gmatch(objects[1], "([^‼]+)") do
         spawnObjectJSON({json = str})
+    end
+    data_objects = JSON.decode(objects[2])
+    if #data_objects >= 1 then
+        for i = 1, #data_objects do
+            spawnObjectData({data = data_objects[i]})
+        end
     end
     JSL_controller.call("setSpawnedTrue")
 end
@@ -50,18 +61,23 @@ function updateLocation(player_color)
     new_pos = zone.getPosition()
     new_pos[2] = JSL_controller.getPosition()[2]
     zone.setPosition(new_pos)
-
+    
+    memory = ""
+    special_data = {}
     Wait.frames(function()
-        memory = ""
         for _, object in pairs(zone.getObjects()) do
             if object.hasTag("JLS_Table") == false then
-                temp = string.gsub(object.getJSON(), "о", "o")
-                temp = string.gsub(temp, "м", "m")
-                temp = string.gsub(temp, "С", "C")
-                memory = memory .. temp .. "‼"
+                temp = object.getJSON()
+                if temp:find("[омС]") ~= nil then
+                    table.insert(special_data, object.getData())
+                else           
+                    memory = memory .. temp .. "‼"
+                end
                 object.destruct()
             end
         end
+        special_data = json.serialize(special_data)
+        memory = memory .. "¶" .. special_data
         self.memo = memory
         JSL_controller.call("setSpawnedFalse")
         zone.setPosition(new_pos - vector(0,60,0)) 
@@ -148,16 +164,21 @@ function saveLocation(obj, player_color, alt_click)
     location_mark.addTag("JLS_Mark")
 
     memory = ""
+    special_data = {}
     Wait.frames(function()
         for _, object in pairs(zone.getObjects()) do
             if object.hasTag("JLS_Table") == false then
-                temp = string.gsub(object.getJSON(), "о", "o")
-                temp = string.gsub(temp, "м", "m")
-                temp = string.gsub(temp, "С", "C")
-                memory = memory .. temp .. "‼"
+                temp = object.getJSON()
+                if temp:find("[омС]") ~= nil then
+                    table.insert(special_data, object.getData())
+                else           
+                    memory = memory .. temp .. "‼"
+                end
                 object.destruct()
             end
         end
+        special_data = json.serialize(special_data)
+        memory = memory .. "¶" .. special_data
         location_mark.memo = memory
         location_mark.reload()
         location_mark.setLock(false)
