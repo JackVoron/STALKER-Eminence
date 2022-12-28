@@ -7,14 +7,9 @@ confirm_buttons = {
     }
 }
 
-prices_inputs = {
-    {
-        position       = {-2.9,0.12,0,04},
-    },
-    {
-        position       = {4.2,0.12,0,04},
-    }
-}
+font_colors = {"#660808", "#000000", "#084008"}
+colors = {White = "FFFFFF", Brown = "713B17", Red = "DA1A18", Orange = "F4641D", Yellow = "E7E52C", Green = "31B32B", 
+        Teal = "21B19B", Blue = "1E87FF", Purple = "A020F0", Pink = "F570CE", Grey = "808080", Black = "000000"}
 
 phrases = {
     "Ты врёшь! Не может быть!",
@@ -26,16 +21,22 @@ phrases = {
 }
 selling_rep = {-20,-10,0,5,10,15,20,25,30,30}
 buying_rep = {-40,-20,0,10,20,30,40,50,60,70}
-symbols = {"☣", "Ⅱ","Ⅲ","Ⅳ","Ⅴ","Ⅵ","Ⅶ","Ⅷ","Ⅸ","♕"}
 
 
 reputation = 3
 
-selling_price = nil
-buying_price = nil
+selling_price = 0
+buying_price = 0
 result_price = 0
 
 function onLoad(save_state)
+    self.UI.setCustomAssets({
+        {
+            type = 1,
+            name = "cifont",
+            url = "http://cloud-3.steamusercontent.com/ugc/1986680868878944084/44125D7412F853AA4ED4A3701035C20D4FE14E90/",
+        }
+    })
     createButtonsAndInputs()
 end
 
@@ -54,25 +55,6 @@ function createButtonsAndInputs()
             tooltip        = "Подтвердить",
         })
     end
-
-    for i = 1,2 do
-        local funcname = "setPrice" .. i
-        local func = function(obj, player_clicker_color, input_value) setPrice(i, input_value) end
-        self.setVar(funcname, func)
-        self.createInput({
-            input_function = funcname,
-            function_owner = self,
-            alignment      = 3,
-            position       = prices_inputs[i].position,
-            width          = 1300,
-            height         = 500,
-            font_size      = 370,
-            color          = {0,0,0,0.6},
-            font_color     = {1,1,1},
-            validation     = 2,
-            tab            = 1,
-        })
-    end
     
     self.createButton({
         click_function = "deal",
@@ -82,49 +64,122 @@ function createButtonsAndInputs()
         width          = 1500,
         height         = 550,
         font_size      = 380,
-        color          = {0,0,0,0.6},
+        color          = {0,0,0,0},
         font_color     = {1,1,1},
         tooltip        = "Сделка",
     })
 
     self.createButton({
-        click_function = "deal",
-        function_owner = self,
-        label          = result_price,
-        position       = {0.65,0.12,-0.1},
-        width          = 0,
-        height         = 0,
-        font_size      = 380,
-        color          = {0,0,0,0.6},
-        font_color     = {1,1,1},
-    })
-
-
-    self.createButton({
         click_function = "setRep",
         function_owner = self,
-        label          = symbols[reputation],
+        label          = "",
         position       = {-4.9,0.12,-0.05},
         width          = 620,
         height         = 550,
         font_size      = 360,
-        color          = {0,0,0,0.6},
-        hover_color    = {0,0,0,0.6},
-        press_color    = {0,0,0,0.6},
+        color          = {0,0,0,0},
         font_color     = {1,1,1},
     })
+
+    self.UI.setXml([[
+    <Text
+        id="reputation"
+        height="300"
+        width="500"
+        color="#000000"
+        fontSize="80"
+        font="cifont/cifont"
+        rotation="180 180 0"
+        horizontalOverflow="overflow"
+        verticalOverflow="overflow"
+        position="490 -7 -12"
+        text="E"
+    />
+    <InputField
+        id="sellInput"
+        height="90"
+        width="250"
+        color="#00000000"
+        textColor="#000000"
+        fontSize="60"
+        font="cifont/cifont"
+        rotation="180 180 0"
+        horizontalOverflow="overflow"
+        verticalOverflow="overflow"
+        textAlignment="MiddleCenter"
+        position="290 -7 -12"
+        text="error"
+        placeholder=" "
+        characterLimit = "7"
+        characterValidation = "Integer"
+        onEndEdit = "setPrice"
+    />
+    <InputField
+        id="buyInput"
+        height="90"
+        width="250"
+        color="#00000000"
+        textColor="#000000"
+        fontSize="60"
+        font="cifont/cifont"
+        rotation="180 180 0"
+        horizontalOverflow="overflow"
+        verticalOverflow="overflow"
+        textAlignment="MiddleCenter"
+        position="-420 -7 -12"
+        text="error"
+        placeholder=" "
+        characterLimit = "7"
+        characterValidation = "Integer"
+        onEndEdit = "setPrice"
+    />
+    <Text
+        id="offer"
+        height="300"
+        width="500"
+        color="#000000"
+        fontSize="60"
+        font="cifont/cifont"
+        rotation="180 180 0"
+        horizontalOverflow="overflow"
+        verticalOverflow="overflow"
+        position="-70 -7 -12"
+        text="error"
+    />
+    ]])
+    Wait.frames(function()
+        self.UI.setAttribute("offer", "text", tostring(result_price))
+
+        local my_font_color
+        if reputation < 3 then
+            my_font_color = font_colors[1]
+        elseif reputation < 8 then
+            my_font_color = font_colors[2]
+        else
+            my_font_color = font_colors[3]
+        end
+        
+        self.UI.setAttribute("reputation", "color", my_font_color)
     
+        if reputation > 1 then
+            self.UI.setAttribute("reputation", "text", tostring(reputation))
+        else
+            self.UI.setAttribute("reputation", "text", "Ø")
+        end
+        self.UI.setAttribute("sellInput", "text", "")
+        self.UI.setAttribute("buyInput", "text", "")
+    end, 5)
 end
 
-function setPrice(i, value)
-    if i == 1 then
+function setPrice(player, value, id)
+    if id == "sellInput" then
         selling_price = tonumber(value)
     else
         buying_price = tonumber(value)
     end
 end
 
-function setRep(obj,color, alt)
+function setRep(obj, color, alt)
     if alt == true then
         if reputation > 1 then
             reputation = reputation - 1
@@ -134,44 +189,49 @@ function setRep(obj,color, alt)
             reputation = reputation + 1
         end
     end
-    self.editButton({
-        index          = 4,
-        label          = symbols[reputation],
-    })
+
+    local my_font_color
+    if reputation < 3 then
+        my_font_color = font_colors[1]
+    elseif reputation < 8 then
+        my_font_color = font_colors[2]
+    else
+        my_font_color = font_colors[3]
+    end
+    
+    self.UI.setAttribute("reputation", "color", my_font_color)
+
+    if reputation > 1 then
+        self.UI.setAttribute("reputation", "text", tostring(reputation))
+    else
+        self.UI.setAttribute("reputation", "text", "Ø")
+    end
 end
 
 function confirm(i)
     if i == 1 then
         result_price = result_price + selling_price + math.floor(selling_price*selling_rep[reputation]/100)
-        self.editInput({
-            index          = 0,
-            value          = nil,
-        })
+        selling_price = 0
+        self.UI.setAttribute("sellInput", "text", "")
     else
         result_price = result_price - buying_price + math.floor(buying_price*buying_rep[reputation]/100)
-        self.editInput({
-            index          = 1,
-            value          = nil,
-        })
+        buying_price = 0
+        self.UI.setAttribute("buyInput", "text", "")
     end
-    self.editButton({
-        index          = 3,
-        label          = result_price,
-    })
+
+    self.UI.setAttribute("offer", "text", tostring(result_price))
 end
 
 function deal(obj, player_color)
     if result_price > 0 then
-        printToAll(Player[player_color].steam_name .. ": [FFFF96]Сделка состоялась. Вы получили[-]: [99ff33]" .. result_price)
+        printToAll("[" .. colors[player_color] .. "]" .. Player[player_color].steam_name .. "[-]: [FFFF96]Сделка состоялась. Вы получили[-]: [99ff33]" .. result_price)
     elseif result_price == 0 then
         printToAll("Торговец: [FFFF96]" .. phrases[math.random(#phrases)])
     else
-        printToAll(Player[player_color].steam_name .. ": [FFFF96]Сделка состоялась. Вы должны[-]: [ff8080]" .. math.abs(result_price))
+        printToAll("[" .. colors[player_color] .. "]" .. Player[player_color].steam_name .. "[-]: [FFFF96]Сделка состоялась. Вы должны[-]: [ff8080]" .. math.abs(result_price))
     end
 
     result_price = 0
-    self.editButton({
-        index          = 3,
-        label          = result_price,
-    })
+
+    self.UI.setAttribute("offer", "text", tostring(result_price))
 end

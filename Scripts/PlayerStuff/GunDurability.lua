@@ -19,23 +19,18 @@ function onLoad(save_state)
         durability = loaded_data[1]
         is_jam = loaded_data[2]
     end
+    self.UI.setCustomAssets({
+        {
+            type = 1,
+            name = "cifont",
+            url = "http://cloud-3.steamusercontent.com/ugc/1986680868878944084/44125D7412F853AA4ED4A3701035C20D4FE14E90/",
+        }
+    })
     createButtons()
 end
 
 function createButtons()
     Settings()
-    self.createButton({
-        click_function = "changeDurability",
-        function_owner = self,
-        label          = durability,
-        position       = {0,0.075,0},
-        width          = 0,
-        height         = 0,
-        scale          = {2,1,2},
-        font_size      = 500,
-        font_color     = {0,0,0},
-    })
-
     self.createButton({
         click_function = "changeDurability",
         function_owner = self,
@@ -46,16 +41,37 @@ function createButtons()
         color          = {0,0,0,0},
     })
 
-    self.createButton({
-        click_function = "changeDurability",
-        function_owner = self,
-        label          = max_durability,
-        position       = {1,0,2.325},
-        width          = 0,
-        height         = 0,
-        font_size      = 400,
-        font_color     = light_color,
-    })
+    self.UI.setXml(
+        [[
+        <Text
+            id="display"
+            height="300"
+            width="300"
+            color="#000000"
+            fontSize="240"
+            font="cifont/cifont"
+            rotation="180 180 0"
+            alignment="MiddleCenter"
+            horizontalOverflow="overflow"
+            verticalOverflow="overflow"
+            position="0 0 -10"
+            text="error"
+        />
+        <Text
+            id="displayMax"
+            height="300"
+            width="300"
+            color="#bdb56b"
+            fontSize="85"
+            font="cifont/cifont"
+            rotation="180 180 0"
+            horizontalOverflow="overflow"
+            verticalOverflow="overflow"
+            position="-95 230 0"
+            text="error"
+        />
+    ]])
+    Wait.frames(updateDisplay, 5)
 end
 
 function changeDurability(obj, color, alt_click)
@@ -86,8 +102,8 @@ function changeDurability(obj, color, alt_click)
 end
 
 function updateDisplay()
-    self.editButton({index = 0, label = durability})
-    self.editButton({index = 2, label = max_durability})
+    self.UI.setAttribute("display", "text", tostring(durability))
+    self.UI.setAttribute("displayMax", "text", tostring(max_durability))
 end
 
 function Settings()

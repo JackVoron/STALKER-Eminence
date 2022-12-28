@@ -1,27 +1,44 @@
 reputations = {}
-font_colors = {{0.4, 0.03, 0.03, 1}, {0, 0, 0, 1}, {0.03, 0.25, 0.03, 1}}
+font_colors = {"#660808", "#000000", "#084008"}
 fractions_name = {"Одиночки", "Братство", "Долг", "Воля", "Чистое Небо", "Экологи", "Силы ОДКБ", "Контингент ООН", "Наёмники", "Монолит"}
 
 
 function onLoad(save_state)
+    self.UI.setCustomAssets({
+        {
+            type = 1,
+            name = "cifont",
+            url = "http://cloud-3.steamusercontent.com/ugc/1986680868878944084/44125D7412F853AA4ED4A3701035C20D4FE14E90/",
+        }
+    })
     createButtons()
 end
 
 function createButtons()
     -- Отображающие
+    result_xml = ""
+    -- Отображающие
     for i=1,10 do
-        my_pos = {2.35, 0.6, -7.415 + ((i-1)*1.6615)}
-        self.createButton({
-            click_function = "none",
-            function_owner = self,
-            rotation       = {0, 0, 0},
-            position       = my_pos,
-            scale          = {4.75,1,1.2},
-            width          = 0,
-            height         = 0,
-            font_size      = 400,
-        })
+        z = -745 + (i-1) * 166
+        xml = [[
+        <Text
+            id="]] .. i .. [["
+            height="300"
+            width="500"
+            color="#000000"
+            fontSize="105"
+            font="cifont/cifont"
+            rotation="180 180 0"
+            horizontalOverflow="overflow"
+            verticalOverflow="overflow"
+            position="-245 ]] .. z ..[[ -60"
+            text="error"
+            scale = "4 1 1"
+        />
+        ]]
+        result_xml = result_xml .. xml .. "\n" 
     end
+    self.UI.setXml(result_xml)
     
     self.createButton({
         click_function = "updateReputation",
@@ -33,7 +50,7 @@ function createButtons()
         color          = {0.1, 0.1, 0.1, 0.01},
         hover_color    = {0.1, 0.1, 0.1, 0.01},
     })
-    Wait.frames(updateReputation, 60)
+    Wait.frames(updateReputation, 5)
 end
 
 function updateReputation()
@@ -69,15 +86,14 @@ function updateDisplay(i)
         my_font_color = font_colors[3]
     end
     if reputations[i] == 0 then
-        self.editButton({index = i - 1, font_color = my_font_color, label = "☣"})
+        self.UI.setAttribute(tostring(i), "text", "Ø")
+        self.UI.setAttribute(tostring(i), "color", my_font_color)
     else
-        self.editButton({index = i - 1, font_color = my_font_color, label = reputations[i]})
+        self.UI.setAttribute(tostring(i), "text", tostring(reputations[i]))
+        self.UI.setAttribute(tostring(i), "color", my_font_color)
     end
 end
 
-function none()
-    return
-end
 
 function round(n) 
     return n % 1 >= 0.5 and math.ceil(n) or math.floor(n) 
