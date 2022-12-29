@@ -200,12 +200,7 @@ function setRep(obj, color, alt)
     end
     
     self.UI.setAttribute("reputation", "color", my_font_color)
-
-    if reputation > 1 then
-        self.UI.setAttribute("reputation", "text", tostring(reputation))
-    else
-        self.UI.setAttribute("reputation", "text", "Ø")
-    end
+    self.UI.setAttribute("reputation", "text", tostring(reputation))
 end
 
 function confirm(i)
