@@ -19,7 +19,7 @@ function createLocation(player_color)
     end
     local objects = {}
 
-    for str in string.gmatch(self.memo, "([^¶]+)") do
+    for str in string.gmatch(self.script_state, "([^¶]+)") do
         table.insert(objects, str)
     end
 
@@ -77,8 +77,7 @@ function updateLocation(player_color)
             end
         end
         special_data = json.serialize(special_data)
-        memory = memory .. "¶" .. special_data
-        self.memo = memory
+        self.script_state = memory .. "¶" .. special_data
         JSL_controller.call("setSpawnedFalse")
         zone.setPosition(new_pos - vector(0,60,0)) 
     end, 5)
@@ -178,8 +177,7 @@ function saveLocation(obj, player_color, alt_click)
             end
         end
         special_data = json.serialize(special_data)
-        memory = memory .. "¶" .. special_data
-        location_mark.memo = memory
+        location_mark.script_state = memory .. "¶" .. special_data
         location_mark.reload()
         location_mark.setLock(false)
         
