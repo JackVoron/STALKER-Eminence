@@ -67,6 +67,10 @@ function updateLocation(player_color)
     Wait.frames(function()
         for _, object in pairs(zone.getObjects()) do
             if object.hasTag("JLS_Table") == false then
+                if object.getJoints()[1] ~= nil then               
+                    object.jointTo()
+                    object = object.reload()
+                end
                 temp = object.getJSON()
                 if temp:find("[омС]") ~= nil then
                     table.insert(special_data, object.getData())
@@ -164,9 +168,14 @@ function saveLocation(obj, player_color, alt_click)
 
     memory = ""
     special_data = {}
+    
     Wait.frames(function()
         for _, object in pairs(zone.getObjects()) do
             if object.hasTag("JLS_Table") == false then
+                if object.getJoints()[1] ~= nil then               
+                    object.jointTo()
+                    object = object.reload()
+                end
                 temp = object.getJSON()
                 if temp:find("[омС]") ~= nil then
                     table.insert(special_data, object.getData())
