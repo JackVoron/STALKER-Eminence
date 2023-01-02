@@ -2,24 +2,7 @@ transparent_color = {1,1,1,0}
 bullets = {}
 zones = {}
 objects = nil
-displays_params = {
-    {
-        click_func = "none", func_owner = self, label = bullets.type0,
-        pos = {0,0.15,-0.8}, w = 0, h = 0, fs = 550,
-    },
-    {
-        click_func = "none", func_owner = self, label = bullets.type1,
-        pos = {-0.91,0.15,0.3225}, w = 0, h = 0, fs = 250,
-    },
-    {
-        click_func = "none", func_owner = self, label = bullets.type2,
-        pos = {0,0.15,0.3225}, w = 0, h = 0, fs = 250,
-    },
-    {
-        click_func = "none", func_owner = self, label = bullets.type3,
-        pos = {0.91,0.15,0.3225}, w = 0, h = 0, fs = 250,
-    },
-}
+
 
 main_buttons_params = {
     {
@@ -118,6 +101,13 @@ function none()
 end
 
 function onSave()
+    self.UI.setCustomAssets({
+        {
+            type = 1,
+            name = "cifont",
+            url = "http://cloud-3.steamusercontent.com/ugc/1986680868878944084/44125D7412F853AA4ED4A3701035C20D4FE14E90/",
+        }
+    })
     data_to_save = {bullets}
     saved_data = JSON.encode(data_to_save)
     return saved_data
@@ -141,15 +131,42 @@ function onLoad(save_state)
 end
 
 function createButtons()
-    for i, data in pairs(displays_params) do
-        if i == 1 then
-            self.createButton({click_function = data.click_func, function_owner = data.func_owner, label = data.label,
-            position = data.pos, width = data.w, height = data.h, font_size = data.fs, font_color = {0.74,0.71,0.42,0.65}})
-        else
-            self.createButton({click_function = data.click_func, function_owner = data.func_owner, label = data.label,
-            position = data.pos, width = data.w, height = data.h, font_size = data.fs, })
-        end
+    result_xml = [[<Text
+    id="0"
+    height="300"
+    width="300"
+    color="#bdb56b"
+    fontSize="210"
+    font="cifont/cifont"
+    rotation="180 180 0"
+    horizontalOverflow="overflow"
+    verticalOverflow="overflow"
+    position="0 -85 -12"
+    text="error"
+    scale = "0.5 0.5 0.5"
+/>
+]]
+    for i=1,3 do
+        x = 90-(i-1)*91
+        xml = [[
+        <Text
+            id="]] .. i .. [["
+            height="300"
+            width="300"
+            color="#000000"
+            fontSize="100"
+            font="cifont/cifont"
+            rotation="180 180 0"
+            horizontalOverflow="overflow"
+            verticalOverflow="overflow"
+            position="]] .. x .. [[ 30 -12"
+            text="error"
+            scale = "0.5 0.5 0.5"
+        />
+        ]]
+        result_xml = result_xml .. xml .. "\n" 
     end
+    self.UI.setXml(result_xml)
 
     for i, data in pairs(main_buttons_params) do
         self.createButton({click_function = data.click_func, function_owner = data.func_owner, label = data.label,
@@ -176,7 +193,8 @@ function createButtons()
             position = data.pos, width = data.w, height = data.h, font_size = data.fs, color = transparent_color})
         end
     end
-    updateDisplays()
+    
+    Wait.frames(updateDisplays, 5)
 end
 
 function changeBulletsQuantity(type, quantity, color)
@@ -263,17 +281,17 @@ function Shoot()
     updateDisplays()
 end
 
-
 function updateDisplays()
-    for i, data in pairs(displays_params) do
+    for i=0,3 do
         local new_lable
-        if bullets["type" .. (i-1)] > 999 then
-            local y = bullets["type" .. (i-1)] / 1000
+        if bullets["type" .. i] > 999 then
+            local y = bullets["type" .. i] / 1000
             new_lable = y - y % 1 .. "к "
         else
-            new_lable = bullets["type" .. (i-1)]
+            new_lable = bullets["type" .. i]
         end
-        self.editButton({index = (i - 1), label = new_lable})
+        
+        self.UI.setAttribute(tostring(i), "text", new_lable)
     end
 end
 

@@ -1,8 +1,10 @@
-money = {0,0}
+money = {0, 0}
 current_state = 1
 tochange = 0
 inp_value = nil
 
+colors = {White = "FFFFFF", Brown = "713B17", Red = "DA1A18", Orange = "F4641D", Yellow = "E7E52C", Green = "31B32B", 
+        Teal = "21B19B", Blue = "1E87FF", Purple = "A020F0", Pink = "F570CE", Grey = "808080", Black = "000000"}
 function onSave()
     data_to_save = {money, current_state}
     saved_data = JSON.encode(data_to_save)
@@ -10,6 +12,14 @@ function onSave()
 end
 
 function onLoad(save_state)
+    self.UI.setCustomAssets({
+        {
+            type = 1,
+            name = "cifont",
+            url = "http://cloud-3.steamusercontent.com/ugc/1986680868878944084/44125D7412F853AA4ED4A3701035C20D4FE14E90/",
+        }
+    })
+    
     if save_state ~= nil then
         loaded_data = JSON.decode(save_state)
         money = loaded_data[1]
@@ -29,18 +39,7 @@ function onLoad(save_state)
 end
 
 function createButtons()
-    self.createButton({
-        click_function = "changeMoney",
-        function_owner = self,
-        label          = "",
-        scale          = {5.2, 1, 9},
-        position       = {0,0.6,-1.93},
-        width          = 0,
-        height         = 0,
-        font_size      = 200,
-        color          = {0,0,0,1},
-        font_color     = {0,0,0},
-    })
+
     self.createButton({
         click_function = "changeMoney",
         function_owner = self,
@@ -51,32 +50,6 @@ function createButtons()
         font_size      = 200,
         color          = {0,0,0,0},
         font_color     = {1,1,1},
-    })
-
-    self.createInput({
-        input_function = "inputMoney",
-        function_owner = self,
-        label          = "",
-        scale          = {5.2, 1, 9},
-        position       = {0,0.6,4.35},
-        width          = 800,
-        height         = 300,
-        font_size      = 200,
-        alignment      = 3,
-        color          = {1,1,1,0},
-        validation     = 2,
-        })
-    self.createButton({
-        click_function = "inputMoney",
-        function_owner = self,
-        label          = "",
-        scale          = {5.2, 1, 9},
-        position       = {0,0.6,4.35},
-        width          = 0,
-        height         = 0,
-        font_size      = 200,
-        color          = {0,0,0,1},
-        font_color     = {0,0,0},
     })
     
     local func = function(obj, color, alt_click) changeMoney(obj, color, true) end
@@ -104,22 +77,62 @@ function createButtons()
     self.createButton({
         click_function = "switchMoney",
         function_owner = self,
-        scale          = {5.2, 1, 9},
-        position       = {0,0.6,-6.15},
-        width          = 0,
-        height         = 0,
-        font_size      = 85,
-
-    })
-    self.createButton({
-        click_function = "switchMoney",
-        function_owner = self,
         position       = {0,0.6,-6.3},
         width          = 7400,
         height         = 1000,
         color          = {0,0,0,0},
     })
-    updateDisplays()
+
+    self.UI.setXml([[<Text
+        id="mainCurrency"
+        height="300"
+        width="500"
+        color="#000000"
+        fontSize="170"
+        font="cifont/cifont"
+        rotation="180 180 0"
+        horizontalOverflow="overflow"
+        verticalOverflow="overflow"
+        position="0 -200 -60"
+        text="error"
+        scale = "1.2 2 1"
+    />
+    <Text
+        id="secondCurrency"
+        height="300"
+        width="500"
+        color="#000000"
+        fontSize="70"
+        font="cifont/cifont"
+        rotation="180 180 0"
+        horizontalOverflow="overflow"
+        verticalOverflow="overflow"
+        position="0 -620 -60"
+        text="error"
+        scale = "1.2 2 1"
+    />
+    <InputField
+        id="moneyInput"
+        height="200"
+        width="800"
+        color="#00000000"
+        textColor="#000000"
+        fontSize="200"
+        font="cifont/cifont"
+        rotation="180 180 0"
+        horizontalOverflow="overflow"
+        verticalOverflow="overflow"
+        textAlignment="MiddleCenter"
+        position="0 410 -60"
+        text="error"
+        placeholder=" "
+        characterLimit = "7"
+        characterValidation = "Integer"
+        scale = "1.2 2 1"
+        onEndEdit = "inputMoney"
+    />
+    ]])
+    Wait.frames(updateDisplays, 5)
 end
 
 function changeMoney(obj, color, alt_click)
@@ -132,13 +145,13 @@ function changeMoney(obj, color, alt_click)
                 tochange = 9999999 - money[current_state]
             end     
             money[current_state] = money[current_state] + tochange
-            printToAll(Player[color].steam_name .. " [FFFF96]начислил[-] ".. tochange .. " " .. getCurrency()[1])
+            printToAll("[" .. colors[color] .. "]" .. Player[color].steam_name .. "[-] [FFFF96]начислил[-] ".. tochange .. " " .. getCurrency()[1]:gsub("P", "₽"))
         else
             if money[current_state] - tochange < 0 then
                 tochange = money[current_state]
             end   
             money[current_state] = money[current_state] - tochange 
-            printToAll(Player[color].steam_name .. " [FFFF96]cписал[-] ".. tochange .. " " .. getCurrency()[1])
+            printToAll("[" .. colors[color] .. "]" .. Player[color].steam_name .. "[-] [FFFF96]cписал[-] ".. tochange .. " " .. getCurrency()[1]:gsub("P", "₽"))
         end
     else
         printToAll("Введите положительное число")
@@ -153,9 +166,6 @@ function switchMoney(obj, color, alt_click)
         current_state = 1
     end
     updateDisplays()
-    self.editInput({index = 0, label= ""})
-    self.editButton({index = 2, label = ""})
-    tochange = 0
 end
 
 function updateDisplays()
@@ -166,33 +176,23 @@ function updateDisplays()
     
     local currency = getCurrency()
     local my_label = tostring(money[current_state]) .. " " .. currency[1]
-    self.editButton({index = 0, label = my_label})
+    self.UI.setAttribute("mainCurrency", "text", my_label)
 
-    local my_label2 = tostring(money[another_state]) .. " " .. currency[2]
-    self.editButton({index = 5, label = my_label2})
+    my_label = tostring(money[another_state]) .. " " .. currency[2]
+    self.UI.setAttribute("secondCurrency", "text", my_label)
 
-    self.editInput({index = 0, value= ""})
-    self.editButton({index = 2, label = ""})
+    self.UI.setAttribute("moneyInput", "text", "")
     tochange = 0
-    
 end
 
 function getCurrency()
     if current_state == 1 then
-        return {"₽","$"}
+        return {"P","$"}
     else
-        return {"$","₽"}
+        return {"$","P"}
     end
 end
 
-function inputMoney(obj, player_clicker_color, input_value, selected)
-    if #input_value > 7 then
-        input_value = string.sub(input_value, 0, 7)
-        inp_value = input_value
-        Wait.time(function()
-            self.editInput({index = 0, value = inp_value})           
-        end, 0.01)
-    end
-    self.editButton({index = 2, label = input_value})
-    tochange = tonumber(input_value)
+function inputMoney(player, value, id)
+    tochange = tonumber(value)
 end
